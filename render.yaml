@@ -1,0 +1,17 @@
+# Render Blueprint — one free web service running the dispatcher desk.
+# In Render: New > Blueprint > pick this GitHub repo. It will ask for ANTHROPIC_API_KEY.
+# Free instances sleep after 15 minutes without traffic and take about a minute to wake:
+# open the demo link a few minutes before you present or record.
+services:
+  - type: web
+    name: qr-subcontracting-desk
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m ui.server
+    healthCheckPath: /api/status
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: ANTHROPIC_API_KEY
+        sync: false

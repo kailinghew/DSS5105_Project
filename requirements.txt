@@ -1,4 +1,2 @@
-# core: standard library only
-pytest>=8
-streamlit>=1.36      # ui/app.py
-anthropic>=1.0      # agent/llm.py (Claude Haiku 5.5)
+# Runtime (what Render installs). The core desk is standard library only.
+anthropic>=1.0        # agent/llm.py — Claude Haiku 5.5 parser
