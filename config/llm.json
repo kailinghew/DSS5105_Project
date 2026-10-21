@@ -1,0 +1,6 @@
+{
+  "_comment": "Claude Haiku 5.5 for intake parsing. temperature is not accepted on this model; repeatability comes from the response cache in eval/llm_cache/. Effort 'low' is enough for one-message extraction; raise it if the held-out set shows misreads. If the API rejects effort combined with format, delete the effort line.",
+  "model": "claude-haiku-5-5",
+  "effort": "low",
+  "max_tokens": 2048
+}

@@ -1,0 +1,11 @@
+{
+  "_comment": "The objective is configuration. Weights apply to min-max normalised criteria (lateness days, defect rate, load share, cost per piece). Lower score wins; ties go to earliest ETA.",
+  "primary": "lateness",
+  "objectives": {
+    "lateness":  {"w_late": 1.0, "w_defect": 0.0, "w_share": 0.0, "w_cost": 0.0, "stall_watch": false},
+    "fair":      {"w_late": 1.0, "w_defect": 0.0, "w_share": 0.5, "w_cost": 0.0, "stall_watch": false},
+    "defects":   {"w_late": 0.3, "w_defect": 1.0, "w_share": 0.0, "w_cost": 0.0, "stall_watch": false},
+    "robust":    {"w_late": 1.0, "w_defect": 0.0, "w_share": 0.0, "w_cost": 0.0, "stall_watch": true},
+    "hybrid":    {"w_late": 0.5, "w_defect": 0.3, "w_share": 0.0, "w_cost": 0.2, "stall_watch": false}
+  }
+}
