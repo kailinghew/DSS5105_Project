@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R11 [08:44] Chen: OldMill is free right now \u2014 give them ORD-008.",
+ "output": {
+  "order_id": "ORD-008",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": "OldMill",
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2062,
+  "output_tokens": 81
+ }
+}

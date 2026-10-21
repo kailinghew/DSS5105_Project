@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R05 [08:14] Mei: ORD-066 due date just moved up \u2014 will confirm the new date after the call, but line something up.",
+ "output": {
+  "order_id": "ORD-066",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2074,
+  "output_tokens": 74
+ }
+}

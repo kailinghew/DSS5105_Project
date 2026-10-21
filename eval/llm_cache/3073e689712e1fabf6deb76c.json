@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R24 [09:48] Boss: Little Loom does lovely work \u2014 ORD-015 to them?",
+ "output": {
+  "order_id": "ORD-015",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": "Little Loom",
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2065,
+  "output_tokens": 82
+ }
+}

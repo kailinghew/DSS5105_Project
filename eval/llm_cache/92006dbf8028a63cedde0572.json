@@ -1,0 +1,31 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R19 [09:23] Boss: That big reorder from last week \u2014 send it to whoever is quickest.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "fastest",
+    "value": null,
+    "imposed_by": "Boss",
+    "source_text": "send it to whoever is quickest"
+   }
+  ],
+  "missing": [
+   "pieces",
+   "due_date",
+   "order"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2065,
+  "output_tokens": 119
+ }
+}

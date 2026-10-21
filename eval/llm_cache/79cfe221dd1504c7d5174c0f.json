@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R06 [08:18] Chen: Farm out ORD-096 please \u2014 1000 beanies for TrendCart, ship date Apr 17.",
+ "output": {
+  "order_id": "ORD-096",
+  "pieces": 1000,
+  "due_date": "2026-04-17",
+  "customer": "TrendCart",
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2080,
+  "output_tokens": 83
+ }
+}

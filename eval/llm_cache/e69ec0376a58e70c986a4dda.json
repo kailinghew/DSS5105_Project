@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R20 [09:29] Mei: New one for the network: ORD-103, 2000 scarves for Bright Basics, due Apr 04.",
+ "output": {
+  "order_id": "ORD-103",
+  "pieces": 2000,
+  "due_date": "2026-04-04",
+  "customer": "Bright Basics",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2079,
+  "output_tokens": 84
+ }
+}

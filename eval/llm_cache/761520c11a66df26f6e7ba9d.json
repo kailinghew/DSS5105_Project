@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R04 [08:08] Boss: ORD-041 needs a home today. 600 beanies, back by Apr 21.",
+ "output": {
+  "order_id": "ORD-041",
+  "pieces": 600,
+  "due_date": "2026-04-21",
+  "customer": null,
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2072,
+  "output_tokens": 78
+ }
+}

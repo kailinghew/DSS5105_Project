@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R29 [10:14] Boss: The vests need to go out this week \u2014 who takes them?",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2060,
+  "output_tokens": 76
+ }
+}

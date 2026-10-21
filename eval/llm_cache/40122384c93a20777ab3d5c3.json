@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R02 [07:59] Ravi: Which workshop did we use for the Harbor Knits batch last October?",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Harbor Knits",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": "history"
+ },
+ "usage": {
+  "input_tokens": 2068,
+  "output_tokens": 74
+ }
+}

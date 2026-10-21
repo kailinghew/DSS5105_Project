@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R17 [09:14] Ravi: ORD-017 \u2014 800 cardigans for TrendCart. Factory is full, this one goes outside. Back by Apr 10 please.",
+ "output": {
+  "order_id": "ORD-017",
+  "pieces": 800,
+  "due_date": "2026-04-10",
+  "customer": "TrendCart",
+  "product": "Cardigan",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2091,
+  "output_tokens": 83
+ }
+}

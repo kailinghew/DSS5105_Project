@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R15 [09:03] Mei: Boss wants the Loom & Leaf stuff outside asap.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Loom & Leaf",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2067,
+  "output_tokens": 81
+ }
+}

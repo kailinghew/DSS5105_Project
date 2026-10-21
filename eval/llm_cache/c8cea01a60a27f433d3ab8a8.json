@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R13 [08:53] Priya: Finance asks: what price did we quote TrendCart on ORD-120?",
+ "output": {
+  "order_id": "ORD-120",
+  "pieces": null,
+  "due_date": null,
+  "customer": "TrendCart",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": "price"
+ },
+ "usage": {
+  "input_tokens": 2069,
+  "output_tokens": 76
+ }
+}

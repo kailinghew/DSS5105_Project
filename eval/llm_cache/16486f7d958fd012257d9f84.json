@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R09 [08:33] Boss: ORD-045 \u2014 150 vests for Cotton Club, due Apr 09. It's urgent. Cost doesn't matter, just the fastest turnaround.",
+ "output": {
+  "order_id": "ORD-045",
+  "pieces": 150,
+  "due_date": "2026-04-09",
+  "customer": "Cotton Club",
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "fastest",
+    "value": null,
+    "imposed_by": "Boss",
+    "source_text": "Cost doesn't matter, just the fastest turnaround."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2098,
+  "output_tokens": 134
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R27 [10:03] Ravi: ORD-095 \u2014 800 hoodies for Bright Basics, due Apr 26. Bright Basics rejected a batch last month, so lowest defect rate you can get.",
+ "output": {
+  "order_id": "ORD-095",
+  "pieces": 800,
+  "due_date": "2026-04-26",
+  "customer": "Bright Basics",
+  "product": "Hoodie",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "lowest_defect_on_time",
+    "value": null,
+    "imposed_by": "Ravi",
+    "source_text": "so lowest defect rate you can get"
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2102,
+  "output_tokens": 136
+ }
+}

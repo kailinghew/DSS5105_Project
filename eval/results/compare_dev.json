@@ -1,0 +1,1532 @@
+[
+ {
+  "id": "R01",
+  "kind": "missing",
+  "want": "clarify",
+  "line": "R01 [07:53] Chen: Need scarves for Harbor Knits sent out today, usual quantities.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 2
+   },
+   "chosen": null,
+   "reply": "2 open orders match (ORD-061, ORD-108): which one do you mean? Please confirm the quantity. I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 2
+   },
+   "chosen": null,
+   "reply": "2 open orders match (ORD-061, ORD-108): which one do you mean? Please confirm the quantity. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R02",
+  "kind": "unanswerable",
+  "want": "decline",
+  "line": "R02 [07:59] Ravi: Which workshop did we use for the Harbor Knits batch last October?",
+  "regex": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": "history",
+    "constraints": [],
+    "candidates": 5
+   },
+   "chosen": null,
+   "reply": "I can't answer that: this system holds no record of past allocations."
+  },
+  "claude": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": "history",
+    "constraints": [],
+    "candidates": 5
+   },
+   "chosen": null,
+   "reply": "I can't answer that: this system holds no record of past allocations."
+  }
+ },
+ {
+  "id": "R03",
+  "kind": "ambiguous",
+  "want": "clarify",
+  "line": "R03 [08:03] Priya: Can we get the TrendCart order moving? They are chasing.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-120, ORD-020, ORD-096, ORD-005, ORD-017, ORD-082): which one do you mean? I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "due_date",
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-120, ORD-020, ORD-096, ORD-005, ORD-017, ORD-082): which one do you mean? Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R04",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R04 [08:08] Boss: ORD-041 needs a home today. 600 beanies, back by Apr 21.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-041",
+    "pieces": 600,
+    "due": "2026-04-21",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-041 (600 pcs, beanie) to Nimble Needle: ready about Apr 8 vs due Apr 21, $720 at $1.20/pc, defect rate 5%. 3 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-041",
+    "pieces": 600,
+    "due": "2026-04-21",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-041 (600 pcs, beanie) to Nimble Needle: ready about Apr 8 vs due Apr 21, $720 at $1.20/pc, defect rate 5%. 3 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R05",
+  "kind": "missing",
+  "want": "clarify",
+  "line": "R05 [08:14] Mei: ORD-066 due date just moved up \u2014 will confirm the new date after the call, but line something up.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-066",
+    "pieces": 1000,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the confirmed due date. I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-066",
+    "pieces": 1000,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R06",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R06 [08:18] Chen: Farm out ORD-096 please \u2014 1000 beanies for TrendCart, ship date Apr 17.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-096",
+    "pieces": 1000,
+    "due": "2026-04-17",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-096 (1000 pcs, beanie) to Nimble Needle: ready about Apr 11 vs due Apr 17, $1,200 at $1.20/pc, defect rate 5%. 3 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-096",
+    "pieces": 1000,
+    "due": "2026-04-17",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-096 (1000 pcs, beanie) to Nimble Needle: ready about Apr 11 vs due Apr 17, $1,200 at $1.20/pc, defect rate 5%. 3 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R07",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R07 [08:23] Ravi: ORD-063 \u2014 100 cardigans. No special requirements, just make Apr 29.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-063",
+    "pieces": 100,
+    "due": "2026-04-29",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-063 (100 pcs, cardigan) to Nimble Needle: ready about Apr 4 vs due Apr 29, $120 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-063",
+    "pieces": 100,
+    "due": "2026-04-29",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-063 (100 pcs, cardigan) to Nimble Needle: ready about Apr 4 vs due Apr 29, $120 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R08",
+  "kind": "ineligible",
+  "want": "refuse",
+  "line": "R08 [08:29] Priya: Send ORD-073 (400 hoodies) to FreshStart, their quote was good.",
+  "regex": {
+   "behaviour": "refuse",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-073",
+    "pieces": 400,
+    "due": "2026-04-20",
+    "suggested": "W8",
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "FreshStart can't take ORD-073: batch of 400 exceeds its 300-piece cap. Instead I suggest Nimble Needle: ready about Apr 6 (on time for Apr 20), $480."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": false,
+   "decision_ok": false,
+   "faithful": true,
+   "errors": [
+    "wrong behaviour: clarify"
+   ],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-073",
+    "pieces": 400,
+    "due": null,
+    "suggested": "W8",
+    "missing": [
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R09",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R09 [08:33] Boss: ORD-045 \u2014 150 vests for Cotton Club, due Apr 09. It's urgent. Cost doesn't matter, just the fastest turnaround.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-045",
+    "pieces": 150,
+    "due": "2026-04-09",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "fastest:@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-045 (150 pcs, vest) to Nimble Needle: ready about Apr 4 vs due Apr 9, $180 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible. Honoured Boss's instruction (fastest)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-045",
+    "pieces": 150,
+    "due": "2026-04-09",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "fastest:@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-045 (150 pcs, vest) to Nimble Needle: ready about Apr 4 vs due Apr 9, $180 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible. Honoured Boss's instruction (Cost doesn't matter, just the fastest turnaround.)."
+  }
+ },
+ {
+  "id": "R10",
+  "kind": "missing",
+  "want": "clarify",
+  "line": "R10 [08:38] Mei: New rush coming in from Loom & Leaf \u2014 details to follow, but book capacity somewhere good.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm which order this is. I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm which order this is. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R11",
+  "kind": "ineligible",
+  "want": "refuse",
+  "line": "R11 [08:44] Chen: OldMill is free right now \u2014 give them ORD-008.",
+  "regex": {
+   "behaviour": "refuse",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-008",
+    "pieces": 600,
+    "due": "2026-04-09",
+    "suggested": "W7",
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "OldMill can't take ORD-008: status SUSPENDED. Instead I suggest Nimble Needle: ready about Apr 8 (on time for Apr 9), $720."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": false,
+   "decision_ok": false,
+   "faithful": true,
+   "errors": [
+    "wrong behaviour: clarify"
+   ],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-008",
+    "pieces": null,
+    "due": null,
+    "suggested": "W7",
+    "missing": [
+     "pieces",
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R12",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R12 [08:48] Ravi: ORD-053 \u2014 800 polo shirts for UrbanThread, due Apr 10. Boss says nothing new to QuickStitch this week, they're swamped.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-053",
+    "pieces": 800,
+    "due": "2026-04-10",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "exclude_workshop:W1@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-053 (800 pcs, polo shirt) to Nimble Needle: ready about Apr 9 vs due Apr 10, $960 at $1.20/pc, defect rate 5%. 5 of 8 workshops were eligible; excluded QuickStitch. Honoured Boss's instruction (Boss says nothing new to QuickStitch)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-053",
+    "pieces": 800,
+    "due": "2026-04-10",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "exclude_workshop:W1@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-053 (800 pcs, polo shirt) to Nimble Needle: ready about Apr 9 vs due Apr 10, $960 at $1.20/pc, defect rate 5%. 5 of 8 workshops were eligible; excluded QuickStitch. Honoured Boss's instruction (Boss says nothing new to QuickStitch this week)."
+  }
+ },
+ {
+  "id": "R13",
+  "kind": "unanswerable",
+  "want": "decline",
+  "line": "R13 [08:53] Priya: Finance asks: what price did we quote TrendCart on ORD-120?",
+  "regex": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-120",
+    "pieces": 1500,
+    "due": "2026-03-17",
+    "suggested": null,
+    "missing": [],
+    "question": "price",
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "I can't answer that: this system holds no quotes or customer prices, only workshop cost per piece."
+  },
+  "claude": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-120",
+    "pieces": 1500,
+    "due": "2026-03-17",
+    "suggested": null,
+    "missing": [],
+    "question": "price",
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "I can't answer that: this system holds no quotes or customer prices, only workshop cost per piece."
+  }
+ },
+ {
+  "id": "R14",
+  "kind": "ineligible",
+  "want": "refuse",
+  "line": "R14 [08:59] Boss: QuickStitch for the scarves on ORD-103?",
+  "regex": {
+   "behaviour": "refuse",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-103",
+    "pieces": 2000,
+    "due": "2026-04-04",
+    "suggested": "W1",
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "QuickStitch can't take ORD-103: does not make ACCESSORIES (makes TOPS). No other workshop can make Apr 4 either: the earliest single workshop is SteadyHands, about Apr 17. Options: accept lateness: SteadyHands by Apr 17 (13 days late); split 1133 to SteadyHands + 867 to Nimble Needle, done by Apr 12 (still late); escalate: renegotiate the date with the customer."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": false,
+   "decision_ok": false,
+   "faithful": true,
+   "errors": [
+    "wrong behaviour: clarify"
+   ],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-103",
+    "pieces": null,
+    "due": null,
+    "suggested": "W1",
+    "missing": [
+     "pieces",
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R15",
+  "kind": "ambiguous",
+  "want": "clarify",
+  "line": "R15 [09:03] Mei: Boss wants the Loom & Leaf stuff outside asap.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-073, ORD-008, ORD-024, ORD-035, ORD-040, ORD-063): which one do you mean? I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "due_date",
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-073, ORD-008, ORD-024, ORD-035, ORD-040, ORD-063): which one do you mean? Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R16",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R16 [09:08] Chen: Loom & Leaf confirmed the reorder: ORD-024, 300 vests. Needs to ship Apr 15, so it has to go out today.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-024",
+    "pieces": 300,
+    "due": "2026-04-15",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-024 (300 pcs, vest) to Nimble Needle: ready about Apr 5 vs due Apr 15, $360 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-024",
+    "pieces": 300,
+    "due": "2026-04-15",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-024 (300 pcs, vest) to Nimble Needle: ready about Apr 5 vs due Apr 15, $360 at $1.20/pc, defect rate 5%. 6 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R17",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R17 [09:14] Ravi: ORD-017 \u2014 800 cardigans for TrendCart. Factory is full, this one goes outside. Back by Apr 10 please.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-017",
+    "pieces": 800,
+    "due": "2026-04-10",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-017 (800 pcs, cardigan) to QuickStitch: ready about Apr 9 vs due Apr 10, $1,200 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-017",
+    "pieces": 800,
+    "due": "2026-04-10",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-017 (800 pcs, cardigan) to QuickStitch: ready about Apr 9 vs due Apr 10, $1,200 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R18",
+  "kind": "unanswerable",
+  "want": "decline",
+  "line": "R18 [09:18] Priya: Any movement on ORD-999? Customer is chasing.",
+  "regex": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-999",
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [],
+    "question": "unknown_order",
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "I can't answer that: ORD-999 is not in the order register."
+  },
+  "claude": {
+   "behaviour": "decline",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-999",
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [],
+    "question": "unknown_order",
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "I can't answer that: ORD-999 is not in the order register."
+  }
+ },
+ {
+  "id": "R19",
+  "kind": "ambiguous",
+  "want": "clarify",
+  "line": "R19 [09:23] Boss: That big reorder from last week \u2014 send it to whoever is quickest.",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [
+     "fastest:@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm which order this is. I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "due_date",
+     "order"
+    ],
+    "question": null,
+    "constraints": [
+     "fastest:@Boss"
+    ],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the quantity and the confirmed due date and which order this is. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R20",
+  "kind": "impossible",
+  "want": "impossible",
+  "line": "R20 [09:29] Mei: New one for the network: ORD-103, 2000 scarves for Bright Basics, due Apr 04.",
+  "regex": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-103",
+    "pieces": 2000,
+    "due": "2026-04-04",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-103 by Apr 4. The earliest single workshop is SteadyHands, about Apr 17. Options: accept lateness: SteadyHands by Apr 17 (13 days late); split 1133 to SteadyHands + 867 to Nimble Needle, done by Apr 12 (still late); escalate: renegotiate the date with the customer."
+  },
+  "claude": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-103",
+    "pieces": 2000,
+    "due": "2026-04-04",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-103 by Apr 4. The earliest single workshop is SteadyHands, about Apr 17. Options: accept lateness: SteadyHands by Apr 17 (13 days late); split 1133 to SteadyHands + 867 to Nimble Needle, done by Apr 12 (still late); escalate: renegotiate the date with the customer."
+  }
+ },
+ {
+  "id": "R21",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R21 [09:33] Chen: ORD-081 \u2014 1500 crewneck sweaters for Harbor Knits, due Apr 13. Margin is thin on this one \u2014 cheapest shop that can still make Apr 13.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-081",
+    "pieces": 1500,
+    "due": "2026-04-13",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "cheapest_on_time:@Chen"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W5",
+   "reply": "Send ORD-081 (1500 pcs, crewneck sweater) to GiantWeave: ready about Apr 12 vs due Apr 13, $1,650 at $1.10/pc, defect rate 6%. 5 of 8 workshops were eligible. Honoured Chen's instruction (cheapest)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-081",
+    "pieces": 1500,
+    "due": "2026-04-13",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "cheapest_on_time:@Chen"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W5",
+   "reply": "Send ORD-081 (1500 pcs, crewneck sweater) to GiantWeave: ready about Apr 12 vs due Apr 13, $1,650 at $1.10/pc, defect rate 6%. 5 of 8 workshops were eligible. Honoured Chen's instruction (cheapest shop that can still make Apr 13)."
+  }
+ },
+ {
+  "id": "R22",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R22 [09:38] Ravi: ORD-040 ready to dispatch. 1200 hoodies for Loom & Leaf, back by Apr 21.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-040",
+    "pieces": 1200,
+    "due": "2026-04-21",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-040 (1200 pcs, hoodie) to QuickStitch: ready about Apr 10 vs due Apr 21, $1,800 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-040",
+    "pieces": 1200,
+    "due": "2026-04-21",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-040 (1200 pcs, hoodie) to QuickStitch: ready about Apr 10 vs due Apr 21, $1,800 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R23",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R23 [09:44] Priya: ORD-005 \u2014 500 scarves for TrendCart, due Apr 20. Split it across two shops if that gets it back faster.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-005",
+    "pieces": 500,
+    "due": "2026-04-20",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "split_allowed:@Priya"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Split ORD-005 (500 pcs, scarf): 175 to Little Loom + 325 to Nimble Needle, all back by about Apr 6 vs due Apr 20 (one shop alone, Nimble Needle: Apr 7). Honoured Priya's instruction (split)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-005",
+    "pieces": 500,
+    "due": "2026-04-20",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "split_allowed:@Priya",
+     "fastest:@Priya"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Split ORD-005 (500 pcs, scarf): 175 to Little Loom + 325 to Nimble Needle, all back by about Apr 6 vs due Apr 20 (one shop alone, Nimble Needle: Apr 7). Honoured Priya's instruction (Split it across two shops if that gets it back faster.). Honoured Priya's instruction (if that gets it back faster)."
+  }
+ },
+ {
+  "id": "R24",
+  "kind": "ineligible",
+  "want": "refuse",
+  "line": "R24 [09:48] Boss: Little Loom does lovely work \u2014 ORD-015 to them?",
+  "regex": {
+   "behaviour": "refuse",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-015",
+    "pieces": 300,
+    "due": "2026-04-16",
+    "suggested": "W4",
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Little Loom can't take ORD-015: does not make TOPS (makes ACCESSORIES). Instead I suggest Nimble Needle: ready about Apr 5 (on time for Apr 16), $360."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": false,
+   "decision_ok": false,
+   "faithful": true,
+   "errors": [
+    "wrong behaviour: clarify"
+   ],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-015",
+    "pieces": null,
+    "due": null,
+    "suggested": "W4",
+    "missing": [
+     "pieces",
+     "due_date"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R25",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R25 [09:53] Mei: ORD-109 \u2014 500 vests for Harbor Knits, due Apr 13. \u2026and keep it away from BudgetWorks, the last batch came back rough.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-109",
+    "pieces": 500,
+    "due": "2026-04-13",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "exclude_workshop:W3@Mei"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-109 (500 pcs, vest) to Nimble Needle: ready about Apr 7 vs due Apr 13, $600 at $1.20/pc, defect rate 5%. 5 of 8 workshops were eligible; excluded BudgetWorks. Honoured Mei's instruction (and keep it away from BudgetWorks)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-109",
+    "pieces": 500,
+    "due": "2026-04-13",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "exclude_workshop:W3@Mei"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W6",
+   "reply": "Send ORD-109 (500 pcs, vest) to Nimble Needle: ready about Apr 7 vs due Apr 13, $600 at $1.20/pc, defect rate 5%. 5 of 8 workshops were eligible; excluded BudgetWorks. Honoured Mei's instruction (keep it away from BudgetWorks)."
+  }
+ },
+ {
+  "id": "R26",
+  "kind": "complete",
+  "want": "allocate",
+  "line": "R26 [09:59] Chen: Can someone place ORD-010? 1000 cardigans, Cotton Club, due Apr 25.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-010",
+    "pieces": 1000,
+    "due": "2026-04-25",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-010 (1000 pcs, cardigan) to QuickStitch: ready about Apr 10 vs due Apr 25, $1,500 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-010",
+    "pieces": 1000,
+    "due": "2026-04-25",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": "W1",
+   "reply": "Send ORD-010 (1000 pcs, cardigan) to QuickStitch: ready about Apr 10 vs due Apr 25, $1,500 at $1.50/pc, defect rate 12%. 5 of 8 workshops were eligible."
+  }
+ },
+ {
+  "id": "R27",
+  "kind": "constraint",
+  "want": "allocate",
+  "line": "R27 [10:03] Ravi: ORD-095 \u2014 800 hoodies for Bright Basics, due Apr 26. Bright Basics rejected a batch last month, so lowest defect rate you can get.",
+  "regex": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-095",
+    "pieces": 800,
+    "due": "2026-04-26",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "lowest_defect_on_time:@Ravi"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W2",
+   "reply": "Send ORD-095 (800 pcs, hoodie) to SteadyHands: ready about Apr 10 vs due Apr 26, $1,040 at $1.30/pc, defect rate 3%. 5 of 8 workshops were eligible. Honoured Ravi's instruction (lowest defect)."
+  },
+  "claude": {
+   "behaviour": "allocate",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-095",
+    "pieces": 800,
+    "due": "2026-04-26",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [
+     "lowest_defect_on_time:@Ravi"
+    ],
+    "candidates": 0
+   },
+   "chosen": "W2",
+   "reply": "Send ORD-095 (800 pcs, hoodie) to SteadyHands: ready about Apr 10 vs due Apr 26, $1,040 at $1.30/pc, defect rate 3%. 5 of 8 workshops were eligible. Honoured Ravi's instruction (so lowest defect rate you can get)."
+  }
+ },
+ {
+  "id": "R28",
+  "kind": "impossible",
+  "want": "impossible",
+  "line": "R28 [10:08] Priya: Sending ORD-002 outside \u2014 1000 crewneck sweaters. Who has room this week? Due Mar 29.",
+  "regex": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-002",
+    "pieces": 1000,
+    "due": "2026-03-29",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-002 by Mar 29. It is already overdue. The earliest single workshop is QuickStitch, about Apr 10. Options: accept lateness: QuickStitch by Apr 10 (12 days late); split 638 to QuickStitch + 362 to SteadyHands, done by Apr 8 (still late); escalate: renegotiate the date with the customer."
+  },
+  "claude": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-002",
+    "pieces": 1000,
+    "due": "2026-03-29",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-002 by Mar 29. It is already overdue. The earliest single workshop is QuickStitch, about Apr 10. Options: accept lateness: QuickStitch by Apr 10 (12 days late); split 638 to QuickStitch + 362 to SteadyHands, done by Apr 8 (still late); escalate: renegotiate the date with the customer."
+  }
+ },
+ {
+  "id": "R29",
+  "kind": "ambiguous",
+  "want": "clarify",
+  "line": "R29 [10:14] Boss: The vests need to go out this week \u2014 who takes them?",
+  "regex": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-120, ORD-020, ORD-109, ORD-045, ORD-015, ORD-024): which one do you mean? I won't allocate until then."
+  },
+  "claude": {
+   "behaviour": "clarify",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": null,
+    "pieces": null,
+    "due": null,
+    "suggested": null,
+    "missing": [
+     "pieces",
+     "due_date",
+     "order"
+    ],
+    "question": null,
+    "constraints": [],
+    "candidates": 6
+   },
+   "chosen": null,
+   "reply": "6 open orders match (ORD-120, ORD-020, ORD-109, ORD-045, ORD-015, ORD-024): which one do you mean? Please confirm the quantity and the confirmed due date. I won't allocate until then."
+  }
+ },
+ {
+  "id": "R30",
+  "kind": "impossible",
+  "want": "impossible",
+  "line": "R30 [10:18] Mei: Please allocate ORD-099: 1500 polo shirts, Northwind Apparel. Deadline Apr 05.",
+  "regex": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-099",
+    "pieces": 1500,
+    "due": "2026-04-05",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-099 by Apr 5. The earliest single workshop is QuickStitch, about Apr 11. Options: accept lateness: QuickStitch by Apr 11 (6 days late); split 957 to QuickStitch + 543 to SteadyHands, done by Apr 9 (still late); escalate: renegotiate the date with the customer."
+  },
+  "claude": {
+   "behaviour": "impossible",
+   "behaviour_ok": true,
+   "decision_ok": true,
+   "faithful": true,
+   "errors": [],
+   "untraced": [],
+   "warnings": [],
+   "extracted": {
+    "order_id": "ORD-099",
+    "pieces": 1500,
+    "due": "2026-04-05",
+    "suggested": null,
+    "missing": [],
+    "question": null,
+    "constraints": [],
+    "candidates": 0
+   },
+   "chosen": null,
+   "reply": "No workshop can deliver ORD-099 by Apr 5. The earliest single workshop is QuickStitch, about Apr 11. Options: accept lateness: QuickStitch by Apr 11 (6 days late); split 957 to QuickStitch + 543 to SteadyHands, done by Apr 9 (still late); escalate: renegotiate the date with the customer."
+  }
+ }
+]

@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R14 [08:59] Boss: QuickStitch for the scarves on ORD-103?",
+ "output": {
+  "order_id": "ORD-103",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": "Scarf",
+  "suggested_workshop": "QuickStitch",
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2063,
+  "output_tokens": 86
+ }
+}

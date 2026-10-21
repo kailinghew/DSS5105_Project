@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R10 [08:38] Mei: New rush coming in from Loom & Leaf \u2014 details to follow, but book capacity somewhere good.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Loom & Leaf",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "order"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2077,
+  "output_tokens": 75
+ }
+}

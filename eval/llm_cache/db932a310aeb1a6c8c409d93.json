@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R01 [07:53] Chen: Need scarves for Harbor Knits sent out today, usual quantities.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Harbor Knits",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "pieces"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2069,
+  "output_tokens": 79
+ }
+}

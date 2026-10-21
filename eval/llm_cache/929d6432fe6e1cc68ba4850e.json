@@ -1,0 +1,23 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R03 [08:03] Priya: Can we get the TrendCart order moving? They are chasing.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "TrendCart",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "pieces",
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2065,
+  "output_tokens": 78
+ }
+}
