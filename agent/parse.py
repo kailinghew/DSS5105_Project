@@ -93,8 +93,11 @@ Fields (use null or [] when the message does not say; never guess, never fill fr
   split_allowed ("split it across shops").
   imposed_by = the person who set it: if the sender relays someone ("Boss says ..."), that person;
   otherwise the sender. source_text = the exact words.
-- missing: list what the sender says is still unknown or what is needed but absent:
-  "pieces" (e.g. "usual quantities"), "due_date" (e.g. "will confirm the date"),
+- missing: ONLY what the sender says is unknown or still to be confirmed. A value the
+  message simply does not mention is NOT missing: the system reads quantity and due date
+  from the order record. So:
+  "pieces" only if the sender says the quantity is unknown ("usual quantities", "qty TBC");
+  "due_date" only if the sender says the date is not settled ("will confirm the date");
   "order" ONLY for a new order not placed yet ("details to follow", "new rush coming in"),
   or when nothing at all identifies the order (no id, no customer, no product).
   If the message names a customer or product but no order id, do NOT put "order" in
@@ -111,6 +114,9 @@ Examples (invented):
    constraints [], missing ["pieces", "due_date"], question_type null
 "R92 [10:09] Kim: what did SteadyHands charge us for ORD-150?"
 -> order_id "ORD-150", question_type "price", everything else null/[]
+"R94 [10:20] Lee: send ORD-210 to SteadyHands"
+-> order_id "ORD-210", suggested_workshop "SteadyHands", pieces null, due_date null, missing []
+   (quantity and date are not mentioned, so they come from the order record: not missing)
 "R93 [10:12] Sam: can we move the Cotton Club scarves along?"
 -> customer "Cotton Club", product "Scarf", missing [] (the system finds the matching orders)"""
 
