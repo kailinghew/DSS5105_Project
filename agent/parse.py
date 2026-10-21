@@ -58,7 +58,7 @@ LLM_SCHEMA = {
             "required": ["kind", "value", "imposed_by", "source_text"],
             "additionalProperties": False}},
         "missing": {"type": "array", "items": {"type": "string", "enum": ["pieces", "due_date", "order"]}},
-        "question_type": {"type": ["string", "null"], "enum": ["history", "price", None]},
+        "question_type": {"type": ["string", "null"]},
     },
     "required": ["order_id", "pieces", "due_date", "customer", "product", "suggested_workshop",
                  "constraints", "missing", "question_type"],
@@ -95,7 +95,10 @@ Fields (use null or [] when the message does not say; never guess, never fill fr
   otherwise the sender. source_text = the exact words.
 - missing: list what the sender says is still unknown or what is needed but absent:
   "pieces" (e.g. "usual quantities"), "due_date" (e.g. "will confirm the date"),
-  "order" (a new order not yet in the system, "details to follow", or no way to tell which order).
+  "order" ONLY for a new order not placed yet ("details to follow", "new rush coming in"),
+  or when nothing at all identifies the order (no id, no customer, no product).
+  If the message names a customer or product but no order id, do NOT put "order" in
+  missing: fill customer and product, and the system looks up which orders match.
 - question_type: "history" if they ask what happened in the past (which workshop was used before);
   "price" if they ask for a quote or price given to a customer. Otherwise null.
 
@@ -107,7 +110,9 @@ Examples (invented):
 -> order_id null, pieces null, due_date null, customer "Northwind Apparel", product "Polo shirt",
    constraints [], missing ["pieces", "due_date"], question_type null
 "R92 [10:09] Kim: what did SteadyHands charge us for ORD-150?"
--> order_id "ORD-150", question_type "price", everything else null/[]"""
+-> order_id "ORD-150", question_type "price", everything else null/[]
+"R93 [10:12] Sam: can we move the Cotton Club scarves along?"
+-> customer "Cotton Club", product "Scarf", missing [] (the system finds the matching orders)"""
 
 
 def _num_in_text(n: int, text: str) -> bool:
@@ -178,7 +183,11 @@ def parse_llm(line: str, fallback: bool = True) -> ParsedRequest:
         req.constraints.append(Constraint(kind, value, c.get("imposed_by") or req.sender,
                                           c.get("source_text", "")))
     req.missing = [m for m in dict.fromkeys(out.get("missing", []))]
-    req.question_type = out.get("question_type")
+    question_type = out.get("question_type")
+    if question_type in ("history", "price"):
+        req.question_type = question_type
+    elif question_type is not None:
+        w.append(f"dropped question_type {question_type!r}: unsupported value")
 
     customer = _match_known(out.get("customer"), {o["customer"] for o in orders().values()})
     product = _match_known(out.get("product"), {o["product"] for o in orders().values()})

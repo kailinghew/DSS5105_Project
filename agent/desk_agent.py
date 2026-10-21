@@ -78,10 +78,19 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
             dec.behaviour = Behaviour.REFUSE
             dec.alternative = chosen
             dec.facts["refused"] = {"workshop": s.workshop_id, "reasons": s.ineligible_reasons}
-            alt = (f" Instead I suggest {best.name}: ready about {fmt_date(best.eta_date)}"
-                   f" ({'on time' if best.meets_due else 'late'} for {fmt_date(due)}),"
-                   f" ${best.cost:,.0f}.") if best else " No other workshop can take it either."
-            dec.explanation = f"{s.name} can't take {order['order_id']}: {'; '.join(s.ineligible_reasons)}.{alt}"
+            why = f"{s.name} can't take {order['order_id']}: {'; '.join(s.ineligible_reasons)}."
+            if best is None:
+                dec.explanation = why + " No other workshop can take it either."
+            elif best.meets_due:
+                dec.explanation = (why + f" Instead I suggest {best.name}: ready about {fmt_date(best.eta_date)}"
+                                   f" (on time for {fmt_date(due)}), ${best.cost:,.0f}.")
+            else:
+                # the alternative is late too: say so, with the same options as an impossible date
+                early = _late_options(dec, cat, pieces, due)
+                dec.alternative = early.workshop_id
+                dec.explanation = (why + f" No other workshop can make {fmt_date(due)} either:"
+                                   f" the earliest single workshop is {early.name}, about {fmt_date(early.eta_date)}."
+                                   f" Options: " + "; ".join(dec.options) + ".")
             return dec
         if s.excluded_by is None:          # eligible suggestion: honour it
             best, chosen = s, s.workshop_id
@@ -96,21 +105,12 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
     split = split_options(cat, pieces, TODAY, due) if not best.meets_due or any(
         k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints) else None
     if not best.meets_due and not (split and split["meets_due"]):
-        early = earliest_possible(cat, pieces, TODAY, due)
+        early = _late_options(dec, cat, pieces, due, split)
         dec.behaviour = Behaviour.IMPOSSIBLE
         dec.alternative = early.workshop_id
-        dec.facts["earliest"] = {"workshop": early.workshop_id, "eta": early.eta_date,
-                                 "days_late": -early.slack_days}
-        dec.facts["split"] = split
         overdue = " It is already overdue." if due < TODAY else ""
-        dec.options = [f"accept lateness: {early.name} by {fmt_date(early.eta_date)}"
-                       f" ({-early.slack_days} days late)",
-                       *([f"split {' + '.join(str(p['pieces']) + ' to ' + p['name'] for p in split['parts'])},"
-                          f" done by {fmt_date(date.fromisoformat(split['eta_date']))}"]
-                         if split else []),
-                       "escalate: renegotiate the date with the customer"]
         dec.explanation = (f"No workshop can deliver {order['order_id']} by {fmt_date(due)}.{overdue}"
-                           f" The earliest is {early.name}, about {fmt_date(early.eta_date)}."
+                           f" The earliest single workshop is {early.name}, about {fmt_date(early.eta_date)}."
                            f" Options: " + "; ".join(dec.options) + ".")
         return dec
 
@@ -144,3 +144,23 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
         + (f"; excluded {', '.join(c.name for c in excluded)}" if excluded else "") + "."
         + constraint_txt)
     return dec
+
+
+def _late_options(dec: Decision, cat: str, pieces: int, due: date, split: dict | None = None):
+    """When no single workshop can make the date: record the earliest achievable date and
+    the three options (accept lateness, split, escalate) in dec.facts / dec.options.
+    Returns the earliest candidate."""
+    early = earliest_possible(cat, pieces, TODAY, due)
+    if split is None:
+        split = split_options(cat, pieces, TODAY, due)
+    dec.facts["earliest"] = {"workshop": early.workshop_id, "eta": early.eta_date,
+                             "days_late": -early.slack_days}
+    dec.facts["split"] = split
+    dec.options = [f"accept lateness: {early.name} by {fmt_date(early.eta_date)}"
+                   f" ({-early.slack_days} days late)",
+                   *([f"split {' + '.join(str(p['pieces']) + ' to ' + p['name'] for p in split['parts'])},"
+                      f" done by {fmt_date(date.fromisoformat(split['eta_date']))}"
+                      f"{'' if split['meets_due'] else ' (still late)'}"]
+                     if split else []),
+                   "escalate: renegotiate the date with the customer"]
+    return early

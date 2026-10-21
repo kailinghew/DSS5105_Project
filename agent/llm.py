@@ -59,6 +59,31 @@ def _get_client():
     return _client
 
 
+_effort_rejected = False   # set once if the API refuses `effort` together with the JSON format
+
+
+def _create(client, cfg: dict, system: str, user: str, schema: dict):
+    """One API call. If the API rejects the `effort` setting (400 mentioning effort),
+    retry once without it and stop sending it for the rest of the run."""
+    global _effort_rejected
+    output_config = {"format": {"type": "json_schema", "schema": schema}}
+    effort = None if _effort_rejected else cfg.get("effort")
+    if effort:
+        output_config["effort"] = effort
+    try:
+        return client.messages.create(
+            model=cfg["model"], max_tokens=cfg.get("max_tokens", 1024), system=system,
+            messages=[{"role": "user", "content": user}], output_config=output_config,
+        ), effort
+    except Exception as e:   # network, auth, rate limit after retries, 4xx on bad params
+        if effort and getattr(e, "status_code", None) == 400 and "effort" in str(e).lower():
+            _effort_rejected = True
+            print("note: the API rejected effort with structured output; continuing without it. "
+                  "Delete the effort line in config/llm.json to silence this.", flush=True)
+            return _create(client, cfg, system, user, schema)
+        raise LLMError(f"{type(e).__name__}: {e}") from e
+
+
 def cache_key(model: str, system: str, user: str, schema: dict) -> str:
     blob = json.dumps([model, system, user, schema], sort_keys=True)
     return hashlib.sha256(blob.encode()).hexdigest()[:24]
@@ -75,19 +100,7 @@ def call_json(system: str, user: str, schema: dict, use_cache: bool = True) -> d
         return json.loads(path.read_text())["output"]
 
     client = _get_client()
-    output_config = {"format": {"type": "json_schema", "schema": schema}}
-    if cfg.get("effort"):
-        output_config["effort"] = cfg["effort"]
-    try:
-        resp = client.messages.create(
-            model=model,
-            max_tokens=cfg.get("max_tokens", 1024),
-            system=system,
-            messages=[{"role": "user", "content": user}],
-            output_config=output_config,
-        )
-    except Exception as e:   # network, auth, rate limit after retries, 4xx on bad params
-        raise LLMError(f"{type(e).__name__}: {e}") from e
+    resp, effort_used = _create(client, cfg, system, user, schema)
 
     if resp.stop_reason == "refusal":
         raise LLMError("model refused")
@@ -103,7 +116,7 @@ def call_json(system: str, user: str, schema: dict, use_cache: bool = True) -> d
 
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
-        "model": model, "user": user, "output": out,
+        "model": model, "effort": effort_used, "user": user, "output": out,
         "usage": {"input_tokens": resp.usage.input_tokens, "output_tokens": resp.usage.output_tokens},
     }, indent=1))
     return out

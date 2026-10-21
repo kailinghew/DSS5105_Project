@@ -75,3 +75,31 @@ def test_schema_follows_structured_output_rules():
         if s.get("type") == "array":
             walk(s["items"])
     walk(LLM_SCHEMA)
+    assert LLM_SCHEMA["properties"]["question_type"] == {"type": ["string", "null"]}
+
+
+def test_unsupported_question_type_is_dropped(monkeypatch):
+    monkeypatch.setattr(llm, "call_json", fake(base(question_type="history")))
+    req = parse_llm(R12)
+    assert req.question_type == "history"
+
+    monkeypatch.setattr(llm, "call_json", fake(base(question_type="unknown")))
+    req = parse_llm(R12)
+    assert req.question_type is None
+    assert "unsupported value" in req.warnings[0]
+
+
+def test_named_customer_lists_matching_orders(monkeypatch):
+    # "the TrendCart order": Claude fills the customer; the code finds the 6 open orders and asks
+    monkeypatch.setattr(llm, "call_json", fake(base(customer="TrendCart")))
+    req = parse_llm("R03 [08:03] Priya: Can we get the TrendCart order moving? They are chasing.")
+    assert len(req.candidate_orders) == 6
+    d = handle(req)
+    assert d.behaviour == Behaviour.CLARIFY and d.facts["n_matches"] == 6
+
+
+def test_new_order_is_not_matched_to_old_ones(monkeypatch):
+    monkeypatch.setattr(llm, "call_json", fake(base(customer="Loom & Leaf", missing=["order"])))
+    req = parse_llm("R10 [08:38] Mei: New rush coming in from Loom & Leaf — details to follow, "
+                    "but book capacity somewhere good.")
+    assert req.candidate_orders == [] and handle(req).behaviour == Behaviour.CLARIFY
