@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R21 [09:33] Chen: ORD-081 \u2014 1500 crewneck sweaters for Harbor Knits, due Apr 13. Margin is thin on this one \u2014 cheapest shop that can still make Apr 13.",
+ "output": {
+  "order_id": "ORD-081",
+  "pieces": 1500,
+  "due_date": "2026-04-13",
+  "customer": "Harbor Knits",
+  "product": "Crewneck sweater",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "cheapest_on_time",
+    "value": null,
+    "imposed_by": "Chen",
+    "source_text": "cheapest shop that can still make Apr 13"
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2268,
+  "output_tokens": 142
+ }
+}

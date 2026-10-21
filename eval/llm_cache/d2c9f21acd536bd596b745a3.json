@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R08 [08:29] Priya: Send ORD-073 (400 hoodies) to FreshStart, their quote was good.",
+ "output": {
+  "order_id": "ORD-073",
+  "pieces": 400,
+  "due_date": null,
+  "customer": null,
+  "product": "Hoodie",
+  "suggested_workshop": "FreshStart",
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2236,
+  "output_tokens": 78
+ }
+}

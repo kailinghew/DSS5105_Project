@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R22 [09:38] Ravi: ORD-040 ready to dispatch. 1200 hoodies for Loom & Leaf, back by Apr 21.",
+ "output": {
+  "order_id": "ORD-040",
+  "pieces": 1200,
+  "due_date": "2026-04-21",
+  "customer": "Loom & Leaf",
+  "product": "Hoodie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2248,
+  "output_tokens": 87
+ }
+}

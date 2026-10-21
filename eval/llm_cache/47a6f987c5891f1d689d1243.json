@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R18 [09:18] Priya: Any movement on ORD-999? Customer is chasing.",
+ "output": {
+  "order_id": "ORD-999",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2226,
+  "output_tokens": 70
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R26 [09:59] Chen: Can someone place ORD-010? 1000 cardigans, Cotton Club, due Apr 25.",
+ "output": {
+  "order_id": "ORD-010",
+  "pieces": 1000,
+  "due_date": "2026-04-25",
+  "customer": "Cotton Club",
+  "product": "Cardigan",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2241,
+  "output_tokens": 85
+ }
+}

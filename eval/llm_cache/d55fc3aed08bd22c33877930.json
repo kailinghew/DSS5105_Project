@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R16 [09:08] Chen: Loom & Leaf confirmed the reorder: ORD-024, 300 vests. Needs to ship Apr 15, so it has to go out today.",
+ "output": {
+  "order_id": "ORD-024",
+  "pieces": 300,
+  "due_date": "2026-04-15",
+  "customer": "Loom & Leaf",
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2256,
+  "output_tokens": 84
+ }
+}

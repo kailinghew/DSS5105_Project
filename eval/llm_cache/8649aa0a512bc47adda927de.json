@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R07 [08:23] Ravi: ORD-063 \u2014 100 cardigans. No special requirements, just make Apr 29.",
+ "output": {
+  "order_id": "ORD-063",
+  "pieces": 100,
+  "due_date": "2026-04-29",
+  "customer": null,
+  "product": "Cardigan",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2237,
+  "output_tokens": 79
+ }
+}

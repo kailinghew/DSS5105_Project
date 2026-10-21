@@ -1,0 +1,33 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R23 [09:44] Priya: ORD-005 \u2014 500 scarves for TrendCart, due Apr 20. Split it across two shops if that gets it back faster.",
+ "output": {
+  "order_id": "ORD-005",
+  "pieces": 500,
+  "due_date": "2026-04-20",
+  "customer": "TrendCart",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "split_allowed",
+    "value": null,
+    "imposed_by": "Priya",
+    "source_text": "Split it across two shops if that gets it back faster."
+   },
+   {
+    "kind": "fastest",
+    "value": null,
+    "imposed_by": "Priya",
+    "source_text": "if that gets it back faster"
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2250,
+  "output_tokens": 173
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R28 [10:08] Priya: Sending ORD-002 outside \u2014 1000 crewneck sweaters. Who has room this week? Due Mar 29.",
+ "output": {
+  "order_id": "ORD-002",
+  "pieces": 1000,
+  "due_date": null,
+  "customer": null,
+  "product": "Crewneck sweater",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2247,
+  "output_tokens": 78
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R12 [08:48] Ravi: ORD-053 \u2014 800 polo shirts for UrbanThread, due Apr 10. Boss says nothing new to QuickStitch this week, they're swamped.",
+ "output": {
+  "order_id": "ORD-053",
+  "pieces": 800,
+  "due_date": "2026-04-10",
+  "customer": "UrbanThread",
+  "product": "Polo shirt",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "exclude_workshop",
+    "value": "QuickStitch",
+    "imposed_by": "Boss",
+    "source_text": "Boss says nothing new to QuickStitch this week"
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2262,
+  "output_tokens": 144
+ }
+}

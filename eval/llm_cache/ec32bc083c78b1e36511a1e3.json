@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R30 [10:18] Mei: Please allocate ORD-099: 1500 polo shirts, Northwind Apparel. Deadline Apr 05.",
+ "output": {
+  "order_id": "ORD-099",
+  "pieces": 1500,
+  "due_date": "2026-04-05",
+  "customer": "Northwind Apparel",
+  "product": "Polo shirt",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2247,
+  "output_tokens": 88
+ }
+}
