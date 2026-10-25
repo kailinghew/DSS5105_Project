@@ -117,6 +117,14 @@ class Handler(SimpleHTTPRequestHandler):
         if self.path.startswith("/api/"):
             sys.stderr.write(f"{self.address_string()} {fmt % args}\n")
 
+    def handle_one_request(self):
+        # A visitor (or Render's health check) closing the connection mid-response is
+        # normal on the internet; don't log it as a crash.
+        try:
+            super().handle_one_request()
+        except (BrokenPipeError, ConnectionResetError):
+            self.close_connection = True
+
     def _send(self, obj, status=HTTPStatus.OK):
         body = json.dumps(obj, default=_jsonable).encode()
         self.send_response(status)
@@ -162,6 +170,8 @@ class Handler(SimpleHTTPRequestHandler):
             if url.path in ("/", "/index.html"):
                 self.path = "/index.html"
             return super().do_GET()
+        except (BrokenPipeError, ConnectionResetError):
+            raise                                   # client went away; handled above
         except Exception as e:  # never show a stack trace to the browser
             return self._error(f"{type(e).__name__}: {e}", HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -203,6 +213,8 @@ class Handler(SimpleHTTPRequestHandler):
             if url.path == "/api/confirm":
                 return self._confirm(body)
             return self._error("unknown endpoint", HTTPStatus.NOT_FOUND)
+        except (BrokenPipeError, ConnectionResetError):
+            raise
         except Exception as e:
             return self._error(f"{type(e).__name__}: {e}", HTTPStatus.INTERNAL_SERVER_ERROR)
 

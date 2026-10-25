@@ -23,7 +23,7 @@ python -m eval.run_inbox --parser llm --show   # Claude Haiku 5.5 parser on the 
 python -m eval.run_inbox --show     # all 30 chat requests, scored against eval/gold_labels.json
 python -m eval.run_sim              # every objective vs the 3 baselines + the earliest-finish rule,
                                     # normal and --shock, 10 seeds -> eval/results_sim.csv
-python -m pytest -q                 # 14 tests, no API key needed
+python -m pytest -q                 # 23 tests, no API key needed
 ```
 
 ## The dispatcher desk (UI)
@@ -53,6 +53,16 @@ page, one stylesheet, one script, no build step).
 
 ## Deploy (Render, free tier)
 
+**Live demo: https://qr-subcontracting-desk.onrender.com** (deployed 25 Oct 2026 from
+`render.yaml` as a Blueprint on a public repository URL).
+
+Render does **not** redeploy on push in this setup. After pushing changes, open the
+service in the Render dashboard and choose **Manual Deploy → Deploy latest commit**.
+The 30 inbox requests are answered from the committed `eval/llm_cache/`, so the demo
+costs nothing for them; a newly typed message makes one live Claude call (about 5 s).
+
+To set it up again from scratch:
+
 1. Push this repo to a **public** GitHub repo (the course requires it).
 2. On render.com, choose **New → Blueprint** and pick the repo. `render.yaml` sets up
    one free web service: it runs `pip install -r requirements.txt` and starts
@@ -78,13 +88,13 @@ Hugging Face Docker Spaces were considered, but they now need a paid plan.
 | `desk/tools.py` | The tool layer, with the spec table in its docstring | [name] | done (v1) |
 | `desk/allocator.py` | Simulator policy built on the same `allocate()`; the earliest-finish rule to beat | [name] | done (v1) |
 | `config/objectives.json` | Objective weights: lateness (primary), fair, defects, robust, hybrid | [name] | done |
-| `agent/parse.py` | `parse_llm`: Haiku 5.5 extracts, code validates. `parse_baseline`: regex, no LLM | [name] | built, **not yet run against the API** |
+| `agent/parse.py` | `parse_llm`: Haiku 5.5 extracts, code validates. `parse_baseline`: regex, no LLM | [name] | done: dev set 30/30, see `agent/CHANGELOG.md` |
 | `agent/llm.py`, `config/llm.json` | API client: structured JSON output, retries, response cache in `eval/llm_cache/` (commit it) | [name] | built |
 | `agent/desk_agent.py` | Routes a request to allocate / clarify / refuse / impossible / decline, with templated explanations | [name] | done (v1) |
 | `desk/explain.py` | `untraced_numbers()`, the faithfulness check | [name] | done |
 | `desk/audit.py` | Append-only JSONL decision log (`logs/decisions.jsonl`) | [name] | done |
 | `ui/server.py`, `ui/static/` | Dispatcher desk web app + JSON API | [name] | done (v1) |
-| `render.yaml` | Free Render deployment | [name] | ready, not yet deployed |
+| `render.yaml` | Free Render deployment | [name] | deployed 25 Oct: https://qr-subcontracting-desk.onrender.com |
 | `eval/` | Gold labels, inbox scorer, simulator runner | [name] | done (v1) |
 | `harness/`, `data/` | Course files, copied unchanged from track2/ | — | — |
 
