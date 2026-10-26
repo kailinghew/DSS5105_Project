@@ -1,6 +1,6 @@
 {
   "_comment": "Hand labels for data/dispatch_requests.txt (v3). kind = data_dictionary.md category; behaviour = what the desk must do. Counts: complete 7, impossible 3, constraint 6, ambiguous 4, missing 3, ineligible 4, unanswerable 3. 'expect' holds checkable details. To be cross-checked by a second team member.",
-  "R01": {"kind": "missing", "behaviour": "clarify", "expect": {"missing": "pieces"}},
+  "R01": {"kind": "missing", "behaviour": "clarify", "expect": {"missing": "pieces", "matches": 2}},
   "R02": {"kind": "unanswerable", "behaviour": "decline", "expect": {"reason": "history"}},
   "R03": {"kind": "ambiguous", "behaviour": "clarify", "expect": {"matches": 6}},
   "R04": {"kind": "complete", "behaviour": "allocate", "expect": {"order_id": "ORD-041", "on_time": true}},
