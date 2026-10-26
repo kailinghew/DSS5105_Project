@@ -1,0 +1,35 @@
+# SweaterCo dispatch group chat — late morning of 2026-04-01.
+# HELD-OUT SET, frozen 2026-10-26 by B (Evaluation lead). Sealed until A4:
+# do not read, label, or tune the parser against these 30 lines before the single final run.
+# One allocation request per line.
+
+R31 [10:24] Chen: ORD-035 — 300 beanies for Loom & Leaf, back by Apr 29.
+R32 [10:27] Ravi: ORD-073 needs to ship — 400 hoodies. Due back Apr 20.
+R33 [10:30] Priya: ORD-008 — 600 polo shirts, nothing special, just make Apr 09.
+R34 [10:33] Mei: ORD-015 needs a shop — 300 vests for UrbanThread, due Apr 16.
+R35 [10:36] Boss: ORD-109 — 500 vests for Harbor Knits, due Apr 13.
+R36 [10:39] Chen: The TrendCart beanies — ORD-096, 1000 pieces. Ship by Apr 17.
+R37 [10:42] Ravi: Harbor Knits needs ORD-081 back by Apr 13 — 1500 crewneck sweaters.
+R38 [10:45] Priya: ORD-082 — 600 beanies for TrendCart, due May 01. Whoever is fastest takes them, nothing else matters.
+R39 [10:48] Mei: ORD-024 — 300 vests, due Apr 15. Cheapest shop that can still make the date.
+R40 [10:51] Boss: ORD-017 — 800 cardigans, back by Apr 10. The customer complained last time, so lowest defect rate you can find.
+R41 [10:54] Chen: ORD-036 — 1000 scarves for UrbanThread, due Apr 26. Split it across two shops if that gets it back sooner.
+R42 [10:57] Ravi: ORD-010 — 1000 cardigans for Cotton Club, due Apr 25. Stay away from QuickStitch on this one, they're overloaded.
+R43 [11:00] Priya: ORD-041 — 600 beanies for Harbor Knits, back by Apr 21. Avoid Nimble Needle, they're stretched.
+R44 [11:03] Mei: Put ORD-083 with FreshStart.
+R45 [11:06] Boss: ORD-020 could go to OldMill, they have spare capacity.
+R46 [11:09] Chen: Would Little Loom take ORD-107? Their quality is great.
+R47 [11:12] Ravi: Would QuickStitch handle ORD-029, 1500 beanies?
+R48 [11:15] Priya: ORD-114 — 2000 hoodies for Northwind Apparel, due Mar 23.
+R49 [11:18] Mei: ORD-061 — 800 scarves for Harbor Knits, need them by Apr 05.
+R50 [11:21] Boss: ORD-062 — 2000 scarves for Bright Basics, deadline Apr 08.
+R51 [11:24] Chen: The Northwind Apparel order — any news? They keep asking.
+R52 [11:27] Ravi: The Cotton Club order needs a nudge — can someone look at it?
+R53 [11:30] Priya: The beanies are waiting — which shops can take them?
+R54 [11:33] Mei: The hoodies — get them outside, please.
+R55 [11:36] Boss: Send out the TrendCart beanies today — usual quantities.
+R56 [11:39] Chen: ORD-093 — the deadline just changed; date TBC, but get ready.
+R57 [11:42] Ravi: Maple & Co is sending a new batch — details to follow. Hold some capacity for it.
+R58 [11:45] Priya: Which workshop did we use for the Maple & Co batch back in February?
+R59 [11:48] Mei: What price did we quote Cotton Club on ORD-055?
+R60 [11:51] Boss: ORD-998 hasn't moved — the customer keeps asking about it.

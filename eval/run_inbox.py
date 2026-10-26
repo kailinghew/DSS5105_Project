@@ -1,9 +1,11 @@
 """
-run_inbox.py — score the desk on the 30 chat requests.
+run_inbox.py — score the desk on a set of chat requests.
 
-    python -m eval.run_inbox                 # baseline (regex) parser
-    python -m eval.run_inbox --parser llm    # once parse_llm exists
+    python -m eval.run_inbox                 # the 30 dev requests, baseline (regex) parser
+    python -m eval.run_inbox --parser llm    # dev requests through Claude
     python -m eval.run_inbox --show          # print every reply
+    python -m eval.run_inbox --file eval/heldout.txt --labels eval/heldout_labels.json
+                                             # B's frozen held-out set (A4, run ONCE)
 
 Scores, per request: behaviour correct? decision details correct (the 'expect' block)?
 explanation faithful (no number that a tool did not produce)? Reported by kind.
@@ -20,8 +22,6 @@ from agent.desk_agent import handle_line
 from agent.parse import parse_baseline, parse_llm
 from desk.data import DATA, ROOT
 from desk.explain import untraced_numbers
-
-GOLD = json.loads((ROOT / "eval" / "gold_labels.json").read_text())
 
 
 def check_details(dec, exp) -> list[str]:
@@ -54,12 +54,20 @@ def check_details(dec, exp) -> list[str]:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--parser", choices=["baseline", "llm"], default="baseline")
+    ap.add_argument("--file", default=str(DATA / "dispatch_requests.txt"),
+                    help="chat lines to score (default: the 30 dev requests)")
+    ap.add_argument("--labels", default=str(ROOT / "eval" / "gold_labels.json"),
+                    help="gold labels to score against (default: eval/gold_labels.json)")
     ap.add_argument("--show", action="store_true")
     args = ap.parse_args()
     parser = parse_llm if args.parser == "llm" else parse_baseline
+    gold = json.loads(Path(args.labels).read_text(encoding="utf-8"))
 
-    lines = [l for l in (DATA / "dispatch_requests.txt").read_text(encoding="utf-8").splitlines()
+    lines = [l for l in Path(args.file).read_text(encoding="utf-8").splitlines()
              if l.strip() and not l.startswith("#")]
+    missing_labels = [l.split()[0] for l in lines if l.split()[0] not in gold]
+    if missing_labels:
+        raise SystemExit(f"no gold label for {missing_labels} in {args.labels}")
     by_kind = defaultdict(lambda: [0, 0, 0, 0])   # n, behaviour ok, details ok, faithful
     fallbacks, warnings = 0, 0
     for line in lines:
@@ -68,7 +76,7 @@ def main():
         warnings += bool(dec.request.warnings)
         if args.show and dec.request.warnings:
             print(f"   {dec.request_id} warnings: {dec.request.warnings}")
-        g = GOLD[dec.request_id]
+        g = gold[dec.request_id]
         beh_ok = dec.behaviour.value == g["behaviour"]
         errs = check_details(dec, g["expect"]) if beh_ok else ["wrong behaviour"]
         untraced = untraced_numbers(dec.explanation, dec)
