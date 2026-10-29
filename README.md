@@ -23,7 +23,7 @@ python -m eval.run_inbox --parser llm --show   # Claude Haiku 5.5 parser on the 
 python -m eval.run_inbox --show     # all 30 chat requests, scored against eval/gold_labels.json
 python -m eval.run_sim              # every objective vs the 3 baselines + the earliest-finish rule,
                                     # normal and --shock, 10 seeds -> eval/results_sim.csv
-python -m pytest -q                 # 23 tests, no API key needed
+python -m pytest -q                 # 27 tests, no API key needed
 ```
 
 ## The dispatcher desk (UI)
@@ -86,6 +86,7 @@ Hugging Face Docker Spaces were considered, but they now need a paid plan.
 | `desk/schemas.py` | **The contracts**: ParsedRequest, Candidate, Decision, Objective. Changing one means telling the team | all | done |
 | `desk/data.py` | Loads the CSVs and reuses the harness's eligibility rule | [name] | done |
 | `desk/tools.py` | The tool layer, with the spec table in its docstring | [name] | done (v1) |
+| `docs/tool_spec.md` | Tool specification: inputs, outputs, purpose, non-goals and failure mode of every tool | [name] | done |
 | `desk/allocator.py` | Simulator policy built on the same `allocate()`; the earliest-finish rule to beat | [name] | done (v1) |
 | `config/objectives.json` | Objective weights: lateness (primary), fair, defects, robust, hybrid | [name] | done |
 | `agent/parse.py` | `parse_llm`: Haiku 5.5 extracts, code validates. `parse_baseline`: regex, no LLM | [name] | done: dev set 30/30, see `agent/CHANGELOG.md` |
