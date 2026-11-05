@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R44 [11:03] Mei: Put ORD-083 with FreshStart.",
+ "output": {
+  "order_id": "ORD-083",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": "FreshStart",
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2222,
+  "output_tokens": 74
+ }
+}

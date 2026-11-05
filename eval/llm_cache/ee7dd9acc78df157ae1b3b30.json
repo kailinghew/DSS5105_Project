@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R32 [10:27] Ravi: ORD-073 needs to ship \u2014 400 hoodies. Due back Apr 20.",
+ "output": {
+  "order_id": "ORD-073",
+  "pieces": 400,
+  "due_date": "2026-04-20",
+  "customer": null,
+  "product": "Hoodie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2237,
+  "output_tokens": 79
+ }
+}

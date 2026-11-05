@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R38 [10:45] Priya: ORD-082 \u2014 600 beanies for TrendCart, due May 01. Whoever is fastest takes them, nothing else matters.",
+ "output": {
+  "order_id": "ORD-082",
+  "pieces": 600,
+  "due_date": "2026-05-01",
+  "customer": "TrendCart",
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "fastest",
+    "value": null,
+    "imposed_by": "Priya",
+    "source_text": "Whoever is fastest takes them, nothing else matters."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2251,
+  "output_tokens": 133
+ }
+}

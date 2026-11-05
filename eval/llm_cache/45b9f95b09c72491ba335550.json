@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R34 [10:33] Mei: ORD-015 needs a shop \u2014 300 vests for UrbanThread, due Apr 16.",
+ "output": {
+  "order_id": "ORD-015",
+  "pieces": 300,
+  "due_date": "2026-04-16",
+  "customer": "UrbanThread",
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2239,
+  "output_tokens": 82
+ }
+}

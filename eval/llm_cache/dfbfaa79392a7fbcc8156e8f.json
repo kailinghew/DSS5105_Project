@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R31 [10:24] Chen: ORD-035 \u2014 300 beanies for Loom & Leaf, back by Apr 29.",
+ "output": {
+  "order_id": "ORD-035",
+  "pieces": 300,
+  "due_date": "2026-04-29",
+  "customer": "Loom & Leaf",
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2238,
+  "output_tokens": 85
+ }
+}

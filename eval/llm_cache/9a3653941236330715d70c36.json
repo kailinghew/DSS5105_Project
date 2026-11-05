@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R50 [11:21] Boss: ORD-062 \u2014 2000 scarves for Bright Basics, deadline Apr 08.",
+ "output": {
+  "order_id": "ORD-062",
+  "pieces": 2000,
+  "due_date": "2026-04-08",
+  "customer": "Bright Basics",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2238,
+  "output_tokens": 84
+ }
+}

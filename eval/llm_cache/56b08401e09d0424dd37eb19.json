@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R57 [11:42] Ravi: Maple & Co is sending a new batch \u2014 details to follow. Hold some capacity for it.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Maple & Co",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "order"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2237,
+  "output_tokens": 73
+ }
+}

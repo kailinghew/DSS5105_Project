@@ -1,0 +1,29 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R54 [11:33] Mei: The hoodies \u2014 get them outside, please.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": "Hoodie",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "exclude_workshop",
+    "value": null,
+    "imposed_by": "Mei",
+    "source_text": "get them outside, please"
+   }
+  ],
+  "missing": [
+   "order"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2220,
+  "output_tokens": 115
+ }
+}

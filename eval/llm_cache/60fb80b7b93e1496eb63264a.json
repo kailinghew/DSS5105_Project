@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R53 [11:30] Priya: The beanies are waiting \u2014 which shops can take them?",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "order"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2223,
+  "output_tokens": 71
+ }
+}

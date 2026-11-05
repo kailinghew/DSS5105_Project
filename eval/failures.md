@@ -1,7 +1,7 @@
 # Failure log — Quick-Response Subcontracting Desk
 
 Owner: B (Evaluation lead) · started 2026-10-26 for B4 · feeds the final report
-(10 cases required; 9 open + 2 resolved below).
+(10 cases required; 10 open + 2 resolved below).
 
 For every case: the **input**, the **expected result**, **what the system did**, **why**,
 and a **possible fix**. All current cases were reproduced with the deterministic pipeline
@@ -92,6 +92,20 @@ should be checked at A4.
 - **Why** The missing-quantity regex only matches the literal phrase `usual quantit...`; "same quantity as always"
   is the same meaning, different words.
 - **Possible fix** Add `same quantity` / `qty as (usual|always|before)` to the missing-pieces patterns.
+
+## F10 · Product-only reference: Claude asks which order but lists none (held-out R53, R54)
+
+- **Input** `R53 [11:30] Priya: The beanies are waiting — which shops can take them?` and
+  `R54 [11:33] Mei: The hoodies — get them outside, please.`
+- **Expected** Clarify, listing the matching open orders (6 beanie orders, 5 hoodie orders).
+- **What the system did** With Claude: `Please confirm which order this is.` with no orders listed
+  (decision 0 matches, expected 6 / 5). Regex lists them correctly.
+- **Why** Claude extracted `product: "Beanie"` but also put `order` in `missing`. `resolve_order()`
+  treats `order` in `missing` as a new order that cannot match an existing one (needed for
+  "new rush from Loom & Leaf, details to follow"), so the lookup is skipped.
+- **Possible fix** Add an explicit `new_order` flag to the extraction schema and look up matches whenever a
+  customer or product is named unless `new_order` is true. Measure on the dev set and fresh wording, not on
+  the held-out set. Found in the single held-out run on 5 Nov (A4), parser frozen at dev_v2.
 
 ---
 

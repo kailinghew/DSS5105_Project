@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R55 [11:36] Boss: Send out the TrendCart beanies today \u2014 usual quantities.",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "TrendCart",
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "pieces"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2227,
+  "output_tokens": 77
+ }
+}

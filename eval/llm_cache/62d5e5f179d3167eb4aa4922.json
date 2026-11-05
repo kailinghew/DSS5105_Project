@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R47 [11:12] Ravi: Would QuickStitch handle ORD-029, 1500 beanies?",
+ "output": {
+  "order_id": "ORD-029",
+  "pieces": 1500,
+  "due_date": null,
+  "customer": null,
+  "product": "Beanie",
+  "suggested_workshop": "QuickStitch",
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2232,
+  "output_tokens": 79
+ }
+}

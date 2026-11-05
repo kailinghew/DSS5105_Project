@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R48 [11:15] Priya: ORD-114 \u2014 2000 hoodies for Northwind Apparel, due Mar 23.",
+ "output": {
+  "order_id": "ORD-114",
+  "pieces": 2000,
+  "due_date": "2026-03-23",
+  "customer": "Northwind Apparel",
+  "product": "Hoodie",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2239,
+  "output_tokens": 87
+ }
+}

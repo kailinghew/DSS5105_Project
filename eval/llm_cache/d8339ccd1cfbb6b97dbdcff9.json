@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R58 [11:45] Priya: Which workshop did we use for the Maple & Co batch back in February?",
+ "output": {
+  "order_id": null,
+  "pieces": null,
+  "due_date": null,
+  "customer": "Maple & Co",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": "history"
+ },
+ "usage": {
+  "input_tokens": 2229,
+  "output_tokens": 73
+ }
+}

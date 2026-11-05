@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R43 [11:00] Priya: ORD-041 \u2014 600 beanies for Harbor Knits, back by Apr 21. Avoid Nimble Needle, they're stretched.",
+ "output": {
+  "order_id": "ORD-041",
+  "pieces": 600,
+  "due_date": "2026-04-21",
+  "customer": "Harbor Knits",
+  "product": "Beanie",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "exclude_workshop",
+    "value": "Nimble Needle",
+    "imposed_by": "Priya",
+    "source_text": "Avoid Nimble Needle, they're stretched."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2255,
+  "output_tokens": 144
+ }
+}

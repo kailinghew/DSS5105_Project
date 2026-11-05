@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R46 [11:09] Chen: Would Little Loom take ORD-107? Their quality is great.",
+ "output": {
+  "order_id": "ORD-107",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": "Little Loom",
+  "constraints": [
+   {
+    "kind": "prefer_workshop",
+    "value": "Little Loom",
+    "imposed_by": "Chen",
+    "source_text": "Their quality is great."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2228,
+  "output_tokens": 121
+ }
+}

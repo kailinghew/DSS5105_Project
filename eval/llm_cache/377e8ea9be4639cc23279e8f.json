@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R59 [11:48] Mei: What price did we quote Cotton Club on ORD-055?",
+ "output": {
+  "order_id": "ORD-055",
+  "pieces": null,
+  "due_date": null,
+  "customer": "Cotton Club",
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": "price"
+ },
+ "usage": {
+  "input_tokens": 2226,
+  "output_tokens": 77
+ }
+}

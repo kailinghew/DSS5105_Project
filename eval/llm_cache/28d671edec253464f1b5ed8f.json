@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R41 [10:54] Chen: ORD-036 \u2014 1000 scarves for UrbanThread, due Apr 26. Split it across two shops if that gets it back sooner.",
+ "output": {
+  "order_id": "ORD-036",
+  "pieces": 1000,
+  "due_date": "2026-04-26",
+  "customer": "UrbanThread",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "split_allowed",
+    "value": null,
+    "imposed_by": "Chen",
+    "source_text": "Split it across two shops if that gets it back sooner."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2253,
+  "output_tokens": 135
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R49 [11:18] Mei: ORD-061 \u2014 800 scarves for Harbor Knits, need them by Apr 05.",
+ "output": {
+  "order_id": "ORD-061",
+  "pieces": 800,
+  "due_date": "2026-04-05",
+  "customer": "Harbor Knits",
+  "product": "Scarf",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2238,
+  "output_tokens": 84
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R39 [10:48] Mei: ORD-024 \u2014 300 vests, due Apr 15. Cheapest shop that can still make the date.",
+ "output": {
+  "order_id": "ORD-024",
+  "pieces": 300,
+  "due_date": "2026-04-15",
+  "customer": null,
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "cheapest_on_time",
+    "value": null,
+    "imposed_by": "Mei",
+    "source_text": "Cheapest shop that can still make the date."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2241,
+  "output_tokens": 128
+ }
+}

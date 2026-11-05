@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R35 [10:36] Boss: ORD-109 \u2014 500 vests for Harbor Knits, due Apr 13.",
+ "output": {
+  "order_id": "ORD-109",
+  "pieces": 500,
+  "due_date": "2026-04-13",
+  "customer": "Harbor Knits",
+  "product": "Vest",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2235,
+  "output_tokens": 83
+ }
+}

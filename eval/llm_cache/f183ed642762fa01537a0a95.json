@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R40 [10:51] Boss: ORD-017 \u2014 800 cardigans, back by Apr 10. The customer complained last time, so lowest defect rate you can find.",
+ "output": {
+  "order_id": "ORD-017",
+  "pieces": 800,
+  "due_date": "2026-04-10",
+  "customer": null,
+  "product": "Cardigan",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "lowest_defect_on_time",
+    "value": null,
+    "imposed_by": "Boss",
+    "source_text": "lowest defect rate you can find"
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2250,
+  "output_tokens": 129
+ }
+}

@@ -1,0 +1,27 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R42 [10:57] Ravi: ORD-010 \u2014 1000 cardigans for Cotton Club, due Apr 25. Stay away from QuickStitch on this one, they're overloaded.",
+ "output": {
+  "order_id": "ORD-010",
+  "pieces": 1000,
+  "due_date": "2026-04-25",
+  "customer": "Cotton Club",
+  "product": "Cardigan",
+  "suggested_workshop": null,
+  "constraints": [
+   {
+    "kind": "exclude_workshop",
+    "value": "QuickStitch",
+    "imposed_by": "Ravi",
+    "source_text": "Stay away from QuickStitch on this one, they're overloaded."
+   }
+  ],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2260,
+  "output_tokens": 149
+ }
+}

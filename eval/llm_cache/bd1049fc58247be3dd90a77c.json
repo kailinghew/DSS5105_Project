@@ -1,0 +1,22 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R56 [11:39] Chen: ORD-093 \u2014 the deadline just changed; date TBC, but get ready.",
+ "output": {
+  "order_id": "ORD-093",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [
+   "due_date"
+  ],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2232,
+  "output_tokens": 74
+ }
+}

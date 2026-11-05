@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R33 [10:30] Priya: ORD-008 \u2014 600 polo shirts, nothing special, just make Apr 09.",
+ "output": {
+  "order_id": "ORD-008",
+  "pieces": 600,
+  "due_date": "2026-04-09",
+  "customer": null,
+  "product": "Polo shirt",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2236,
+  "output_tokens": 80
+ }
+}

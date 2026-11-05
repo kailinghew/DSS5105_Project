@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R37 [10:42] Ravi: Harbor Knits needs ORD-081 back by Apr 13 \u2014 1500 crewneck sweaters.",
+ "output": {
+  "order_id": "ORD-081",
+  "pieces": 1500,
+  "due_date": "2026-04-13",
+  "customer": "Harbor Knits",
+  "product": "Crewneck sweater",
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2245,
+  "output_tokens": 89
+ }
+}

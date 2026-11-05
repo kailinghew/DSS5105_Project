@@ -14,6 +14,7 @@ works on new wording. The held-out set (task A4, written by B) is the real test.
 |---|---|---|---|---|---|
 | dev | 21 Oct | first live run | 26 / 26 / 30 of 30 | 30 / 30 / 30 | `eval/results/compare_dev.md` |
 | dev_v2 | 21 Oct | C2 below | **30 / 30 / 30 of 30** | 30 / 30 / 30 | `eval/results/compare_dev_v2.md` |
+| **heldout** | 5 Nov | none: parser frozen at dev_v2 | **30 / 28 / 30 of 30** | 30 / 30 / 30 | `eval/results/compare_heldout.md` |
 
 Cost of one 30-request run (dev_v2): 67,219 input + 2,824 output tokens, about 2,200 input
 tokens per message, mostly the system prompt. The single-message check (`eval.check_llm`)
@@ -50,7 +51,32 @@ took 5.2 s.
 - Left as is, so as not to tune the prompt to a single development message.
 - Watch for it on the held-out set.
 
+## A4: held-out run (5 Nov), the parser's real test
+
+One run on B's 30 reworded requests (`eval/heldout.txt`, frozen 26 Oct), with the parser
+frozen at dev_v2: no prompt or code change before or after. All 30 Claude answers are in
+`eval/llm_cache/` (the files dated 5 Nov).
+
+- **Behaviour 30/30, faithful 30/30, decision 28/30.** Regex: 30/30/30.
+- **R53, R54 (ambiguous) failed on decision.** "The beanies are waiting — which shops can
+  take them?" / "The hoodies — get them outside, please." Claude extracted the product
+  correctly (`"product": "Beanie"`) but also put `order` in `missing`. `resolve_order()`
+  reads `order` in `missing` as "a new order, nothing to match" (needed for R10), so it
+  skipped the lookup. The desk still asked which order (right behaviour) but could not
+  list the 6 and 5 matching orders, as regex does. Logged as F10 in `eval/failures.md`.
+  The prompt already says not to do this when a product is named; the model ignored it
+  for product-only references with no customer.
+- **R46 (ineligible) passed, with an extra constraint.** "Would Little Loom take ORD-107?"
+  Claude also added `prefer_workshop: W4`, the same as the suggestion. No effect on the
+  decision; kept as an observation.
+- **Not tuned.** Fixing F10 and re-running on this set would turn it into a second
+  development set. Any fix is measured on the development set plus new, unseen wording,
+  and this held-out score is reported as it is.
+
+Cost of the run: 67,089 input + 2,775 output tokens.
+
 ## Next
 
-- **A4:** one run on B's held-out set, after which the parser is frozen:
-  `python -m eval.compare_parsers --file eval/heldout.txt --labels eval/heldout_labels.json --name heldout`
+- F10 fix candidate (Sprint 3): a `new_order` flag in the schema, so the lookup runs
+  whenever a customer or product is named unless the sender says the order is new,
+  instead of inferring "new" from `order` in `missing`.

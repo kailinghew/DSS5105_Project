@@ -1,0 +1,20 @@
+{
+ "model": "claude-haiku-5-5",
+ "effort": "low",
+ "user": "R60 [11:51] Boss: ORD-998 hasn't moved \u2014 the customer keeps asking about it.",
+ "output": {
+  "order_id": "ORD-998",
+  "pieces": null,
+  "due_date": null,
+  "customer": null,
+  "product": null,
+  "suggested_workshop": null,
+  "constraints": [],
+  "missing": [],
+  "question_type": null
+ },
+ "usage": {
+  "input_tokens": 2231,
+  "output_tokens": 70
+ }
+}
