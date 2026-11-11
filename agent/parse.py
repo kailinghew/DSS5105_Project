@@ -23,7 +23,7 @@ from desk.tools import find_orders, get_order
 
 LINE = re.compile(r"^(R\d+)\s+\[(\d\d:\d\d)\]\s+([^:]+):\s*(.*)$")
 MONTHS = {m: i for i, m in enumerate("jan feb mar apr may jun jul aug sep oct nov dec".split(), 1)}
-DATE = re.compile(r"\b(Jan|Feb|Mar|Apr|May|Jun)[a-z]*\.?\s+(\d{1,2})\b", re.I)
+DATE = re.compile(r"\b(Jan|Feb|Mar|Apr|May|Jun)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b", re.I)   # F8: "Apr 8th"
 PIECES = re.compile(r"\b(\d[\d,]*)\s+(?!(?:days?|weeks?)\b)[a-z]", re.I)
 ORDER = re.compile(r"\bORD-\d+\b", re.I)
 
@@ -211,7 +211,10 @@ def _match_known(value: str | None, known: set[str]) -> str | None:
 
 
 # ------------------------------------------------------------------------- baseline
-_EXCLUDE_CUES = ("away from", "nothing new to", "not to", "avoid", "except")
+# F1-F3: "steer clear of", "skip", "anything but" were read as suggestions
+_EXCLUDE_CUES = ("away from", "nothing new to", "not to", "avoid", "except", "steer clear of",
+                 "skip", "anything but", "anyone but", "rather not", "don't use", "do not use",
+                 "not with", "no more work to")
 
 
 def _singular(w: str) -> str:
@@ -228,7 +231,7 @@ def parse_baseline(line: str) -> ParsedRequest:
     req = ParsedRequest(request_id=rid, sender=sender.strip(), time=time, raw_text=line.strip())
 
     # questions this data cannot answer
-    if re.search(r"which workshop did we|did we use", low):
+    if re.search(r"which workshop did we|did we use|who handled|who made the|last time we", low):   # F7
         req.question_type = "history"
     elif re.search(r"what price|how much did we (quote|charge)", low):
         req.question_type = "price"
@@ -252,16 +255,19 @@ def parse_baseline(line: str) -> ParsedRequest:
     # objective-style constraints
     for pat, kind in [(r"fastest|quickest", ConstraintKind.FASTEST),
                       (r"cheapest", ConstraintKind.CHEAPEST_ON_TIME),
-                      (r"lowest defect", ConstraintKind.LOWEST_DEFECT_ON_TIME),
+                      (r"(lowest|fewest|least|fewer) defect", ConstraintKind.LOWEST_DEFECT_ON_TIME),   # F4
                       (r"\bsplit\b", ConstraintKind.SPLIT_ALLOWED)]:
         m = re.search(pat, low)
         if m:
             req.constraints.append(Constraint(kind, None, imposer, m.group(0)))
 
     # explicit gaps
-    if re.search(r"usual quantit", low):
+    _TBC = r"(tbc|tbd|to be confirmed|not (?:set|fixed|final) yet)"
+    if re.search(r"usual quantit|same (quantity|qty)|(qty|quantity) as (usual|always|before)"   # F9
+                 rf"|(quantity|qty|pieces)\b[^.]*\b{_TBC}", low):                              # F6
         req.missing.append("pieces")
-    if re.search(r"(will )?confirm the new date|date tbc|new date after", low):
+    if re.search(r"(will )?confirm the new date|date tbc|new date after"
+                 rf"|(date|deadline|due)\b[^.]*\b{_TBC}", low):                                 # F5
         req.missing.append("due_date")
     if re.search(r"details to follow", low):
         req.missing.append("order")
@@ -289,6 +295,11 @@ def parse_baseline(line: str) -> ParsedRequest:
     return resolve_order(req, customer, product)
 
 
+def _says_new_order(req: ParsedRequest) -> bool:
+    return bool(re.search(r"\bnew (order|rush|batch|one|job)\b|details to follow",
+                          req.raw_text, re.I))
+
+
 def resolve_order(req: ParsedRequest, customer: str | None = None,
                   product: str | None = None) -> ParsedRequest:
     """Shared by both parsers: turn what was extracted into a known order (or a list of
@@ -298,7 +309,10 @@ def resolve_order(req: ParsedRequest, customer: str | None = None,
             req.question_type = req.question_type or "unknown_order"
             return req
     else:
-        if (customer or product) and "order" not in req.missing:   # a new order can't match
+        # F10: "order" in missing used to skip the lookup entirely, so a product-only
+        # reference ("the beanies are waiting") listed no orders. Only a message that says
+        # the order is NEW ("new rush ... details to follow") has nothing to match.
+        if (customer or product) and not _says_new_order(req):
             matches = find_orders(customer=customer, product=product)
             if len(matches) == 1 and not req.missing:
                 req.order_id = matches[0]["order_id"]

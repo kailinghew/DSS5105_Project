@@ -4,6 +4,7 @@ run_inbox.py — score the desk on a set of chat requests.
     python -m eval.run_inbox                 # the 30 dev requests, baseline (regex) parser
     python -m eval.run_inbox --parser llm    # dev requests through Claude
     python -m eval.run_inbox --show          # print every reply
+    python -m eval.run_inbox --strict        # exit 1 unless every request passes (CI)
     python -m eval.run_inbox --file eval/heldout.txt --labels eval/heldout_labels.json
                                              # B's frozen held-out set (A4, run ONCE)
 
@@ -59,6 +60,8 @@ def main():
     ap.add_argument("--labels", default=str(ROOT / "eval" / "gold_labels.json"),
                     help="gold labels to score against (default: eval/gold_labels.json)")
     ap.add_argument("--show", action="store_true")
+    ap.add_argument("--strict", action="store_true",
+                    help="exit with an error if any request fails (used by CI)")
     args = ap.parse_args()
     parser = parse_llm if args.parser == "llm" else parse_baseline
     gold = json.loads(Path(args.labels).read_text(encoding="utf-8"))
@@ -96,6 +99,8 @@ def main():
     print(f"{'TOTAL':<14}{tot[0]:>4}{tot[1]:>11}{tot[2]:>10}{tot[3]:>10}")
     print(f"\nparser: {args.parser} · requests with validation warnings: {warnings} · "
           f"fell back to regex: {fallbacks}" + ("  <- LLM NOT USED, check API key" if fallbacks else ""))
+    if args.strict and tot[1:] != [tot[0]] * 3:
+        raise SystemExit(f"--strict: not every request passed ({tot[1]}/{tot[2]}/{tot[3]} of {tot[0]})")
 
 
 if __name__ == "__main__":

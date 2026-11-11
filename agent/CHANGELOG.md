@@ -75,8 +75,20 @@ frozen at dev_v2: no prompt or code change before or after. All 30 Claude answer
 
 Cost of the run: 67,089 input + 2,775 output tokens.
 
+## C3. Order lookup no longer skipped for product-only references (11 Nov)
+
+- **Fix for F10** (`resolve_order`, shared by both parsers): the lookup runs whenever a
+  customer or product is named, unless the message itself says the order is new
+  ("new rush / order / batch / one / job", "details to follow"). We chose a check on the
+  message over a new schema field: a schema change would change every cache key and
+  force all 60 Claude answers to be fetched again.
+- **No prompt or schema change**, so Claude's cached answers are reused as they are.
+- **Re-scored:** dev 30/30/30 (`eval/results/compare_dev_v3.md`); held-out 30/30/30
+  (`eval/results/compare_heldout_after_fixes.md`).
+- **The held-out headline stays 30/28/30.** This fix was written after seeing R53 and R54
+  fail, so the post-fix held-out score is not an unseen test and is reported only as a
+  check that the fix works.
+
 ## Next
 
-- F10 fix candidate (Sprint 3): a `new_order` flag in the schema, so the lookup runs
-  whenever a customer or product is named unless the sender says the order is new,
-  instead of inferring "new" from `order` in `missing`.
+- Score Claude on the failure-log probes R91-R99 (new wording, never used for tuning).

@@ -104,7 +104,10 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
     # 4. nobody can make the date -> impossible, with numbers and options ------------------
     split = split_options(cat, pieces, TODAY, due) if not best.meets_due or any(
         k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints) else None
-    if not best.meets_due and not (split and split["meets_due"]):
+    # a split only rescues the date if the sender allowed one; otherwise a late single
+    # shop must not be allocated silently (found while fixing F8: "Apr 8th" -> late by 1 day)
+    split_ok = any(k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints)
+    if not best.meets_due and not (split and split["meets_due"] and split_ok):
         early = _late_options(dec, cat, pieces, due, split)
         dec.behaviour = Behaviour.IMPOSSIBLE
         dec.alternative = early.workshop_id

@@ -1,13 +1,48 @@
 # Failure log — Quick-Response Subcontracting Desk
 
 Owner: B (Evaluation lead) · started 2026-10-26 for B4 · feeds the final report
-(10 cases required; 10 open + 2 resolved below).
+(10 cases required; 11 cases fixed on 2026-11-11, see the status table, + 2 resolved earlier).
 
 For every case: the **input**, the **expected result**, **what the system did**, **why**,
 and a **possible fix**. All current cases were reproduced with the deterministic pipeline
 (`agent.desk_agent.handle_line` with the regex baseline parser) on 2026-10-26.
 "Parser" says which intake parser is affected; Claude's behaviour on the same wording
 should be checked at A4.
+
+## Status, 2026-11-11
+
+All cases below are fixed and pinned by `tests/test_failure_cases.py` (one test per case),
+which runs on every push (`.github/workflows/tests.yml`). The case entries are kept as
+written, so the report can quote the original failure.
+
+| Case | Fix | Where |
+|---|---|---|
+| F1-F3 | Exclusion cues added: "steer clear of", "skip", "anything but", "anyone but", "rather not", "don't use", "do not use", "not with", "no more work to" | `agent/parse.py` `_EXCLUDE_CUES` |
+| F4 | "fewest / least / fewer defects" map to `lowest_defect_on_time` | `agent/parse.py` |
+| F5, F6 | A date, deadline, quantity or qty followed in the same sentence by TBC / TBD / to be confirmed / not set yet is marked missing | `agent/parse.py` |
+| F7 | "who handled", "who made the", "last time we" are history questions | `agent/parse.py` |
+| F8 | The date pattern accepts ordinal suffixes ("Apr 8th") | `agent/parse.py` `DATE` |
+| F9 | "same quantity", "qty as usual / always / before" mark the quantity missing | `agent/parse.py` |
+| F10 | The order lookup runs whenever a customer or product is named, unless the message says the order is new ("new rush", "details to follow"); "order" in `missing` no longer skips it | `agent/parse.py` `resolve_order` |
+| F16 (new) | See below | `agent/desk_agent.py` |
+
+Re-scored after the fixes: regex 30/30/30 on the development and held-out sets; Claude,
+from its cached answers (no prompt change, no new API call), 30/30/30 on development
+(`compare_dev_v3.md`) and 30/30/30 on held-out (`compare_heldout_after_fixes.md`).
+**The held-out headline stays the single pre-fix run, 30/28/30**: the fix for F10 was
+written after seeing R53/R54 fail, so the post-fix held-out score is not an unseen test.
+
+## F16 · A late single shop was allocated silently when a split could have made the date
+
+- **Input** `R98 [12:07] Ravi: ORD-017 — 800 cardigans for TrendCart, back by Apr 8th.` (after the F8 fix)
+- **Expected** `impossible`: no single shop makes Apr 8 (earliest QuickStitch, Apr 9); a split is an option.
+- **What the system did** `Send ORD-017 ... to QuickStitch: ready about Apr 9 vs due Apr 8` — an allocation
+  that is late, with no warning.
+- **Why** The impossible check skipped any order a two-shop split could make on time, even when the sender
+  had not allowed a split, so the late single shop fell through to "allocate".
+- **Fix** A split rescues the date only if the sender allowed it (`split_allowed`); otherwise the desk says
+  the date is impossible and lists the split among the options. Test:
+  `test_f8_ordinal_date_is_read_and_the_order_is_impossible`. Found while fixing F8.
 
 ---
 

@@ -1,0 +1,23 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: pip install -r requirements.txt pytest
+      - name: Unit and regression tests (no API key needed)
+        run: python -m pytest -q
+      - name: Inbox score, regex parser, development set
+        run: python -m eval.run_inbox --strict
+      - name: Inbox score, regex parser, held-out set
+        run: python -m eval.run_inbox --file eval/heldout.txt --labels eval/heldout_labels.json --strict

@@ -23,7 +23,7 @@ python -m eval.run_inbox --parser llm --show   # Claude Haiku 5.5 parser on the 
 python -m eval.run_inbox --show     # all 30 chat requests, scored against eval/gold_labels.json
 python -m eval.run_sim              # every objective vs the 3 baselines + the earliest-finish rule,
                                     # normal and --shock, 10 seeds -> eval/results_sim.csv
-python -m pytest -q                 # 27 tests, no API key needed
+python -m pytest -q                 # 38 tests, no API key needed (also run on every push)
 ```
 
 ## The dispatcher desk (UI)
