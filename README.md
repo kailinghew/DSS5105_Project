@@ -28,28 +28,13 @@ python -m pytest -q                 # 38 tests, no API key needed (also run on e
 
 ## The dispatcher desk (UI)
 
-`ui/server.py` (standard-library web server and JSON API) plus `ui/static/` (one HTML
-page, one stylesheet, one script, no build step).
+- **Requests:** start a conversation, paste a chat message or choose one from the course inbox. If the desk asks for an order, a date or a quantity, reply in the same conversation. The current order and instructions carry forward. Start a new chat for a different order.
+- **On-time preference:** the five slider positions trade off lowest cost and lowest defect rate. The desk considers eligible workshops that can meet the deadline first. The message's explicit instructions still take precedence. Changing the slider on an open recommendation reruns it when the composer is empty.
+- **Conversation history:** the browser keeps the 12 latest messages and condenses older messages into the current order, quantity, deadline and constraints. The server keeps one structured dispatch draft per conversation, so follow-ups never send the transcript to Claude. Browser history survives refresh. A server restart or expiry requires a new conversation.
+- **Workshops:** check all eight workshops for a quantity, product category and deadline.
+- **Decision log:** recommendations require human confirmation before they enter the log. The demo uses the 1 April queue snapshot and does not send orders to workshops.
 
-- **Requests:** the morning's group chat on the left. Pick a message, or type one, and
-  the desk shows:
-  - the verdict: send to a shop, ask first, refuse, date impossible, or can't answer;
-  - the key numbers;
-  - whose instructions it followed;
-  - a strip per workshop showing queue wait, making time, expected rework and
-    transport against the due date, so you can see why the winner won.
-- **Confirm and log:** writes the allocation, with the confirmer's name, to the audit
-  log. "Copy reply" gives the text to paste back into the chat. "Read all" triages the
-  whole inbox at once.
-- **Workshops:** asks "who can take N pieces by date X?" across all 8 shops, and shows
-  their profile cards.
-- **Decision log:** every decision, newest first.
-- **Settings:** the objective and the parser (Claude Haiku or regex) are switchable in
-  the top bar. With no API key on the server, Claude is greyed out and regex is used.
-- **Safeguards:**
-  - The API key never reaches the browser.
-  - Messages are capped at 500 characters.
-  - Claude calls are capped at 200 per hour, to protect the budget on a public link.
+For a quick check, open the **Confirm a new deadline** example and reply with `Apr 18`. Then open a new chat, enter `ORD-053, 800 polo shirts, due Apr 10.`, and move the slider between its endpoints.
 
 ## Deploy (Render, free tier)
 

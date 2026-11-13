@@ -9,6 +9,7 @@ JSON API (the page in ui/static/ is the only client):
     GET  /api/status                   LLM available? today's date, objectives
     GET  /api/inbox                    the 30 chat requests
     POST /api/handle   {line, parser, objective}   -> decision (+ id, reply text)
+    POST /api/chat     {line, conversation_id?, turn?, level, parser} -> chat decision
     POST /api/confirm  {id, confirmed_by}          -> logs a confirmed decision
     GET  /api/log                      latest decisions from logs/decisions.jsonl
     GET  /api/register?category=TOPS&pieces=1500&due=2026-04-13   -> 8 workshops evaluated
@@ -35,19 +36,22 @@ from urllib.parse import parse_qs, urlparse
 ROOT = Path(__file__).resolve().parent.parent
 sys.path[:0] = [str(ROOT), str(ROOT / "harness")]
 
-from agent.desk_agent import handle_line  # noqa: E402
+from agent.conversation import Draft, TRADEOFF, merge_turn, objective_for  # noqa: E402
+from agent.desk_agent import handle, handle_line  # noqa: E402
 from agent.parse import parse_baseline, parse_llm, split_line  # noqa: E402
 from desk import audit  # noqa: E402
 from desk.allocator import CONFIG as OBJECTIVES, load_objective  # noqa: E402
 from desk.data import DATA, TODAY, workshops  # noqa: E402
 from desk.explain import fmt_date  # noqa: E402
+from desk.schemas import Behaviour, Decision  # noqa: E402
 from desk.tools import evaluate_all  # noqa: E402
 
 STATIC = Path(__file__).resolve().parent / "static"
 MAX_MESSAGE = 500                 # characters; a chat line, not an essay
 LLM_CALLS_PER_HOUR = 200          # protects the API budget on a public demo link
 
-_decisions: dict[str, object] = {}      # id -> Decision, for confirm
+_decisions: dict[str, Decision] = {}
+_conversations: dict[str, Draft] = {}
 _lock = threading.Lock()
 _llm_calls: list[float] = []
 
@@ -154,7 +158,8 @@ class Handler(SimpleHTTPRequestHandler):
             if url.path == "/api/status":
                 cfg = json.loads(OBJECTIVES.read_text())
                 return self._send({"llm": _llm_available(), "today": TODAY,
-                                   "objectives": list(cfg["objectives"]), "primary": cfg["primary"]})
+                                   "objectives": list(cfg["objectives"]), "primary": cfg["primary"],
+                                   "tradeoff": TRADEOFF})
             if url.path == "/api/inbox":
                 lines = [l for l in (DATA / "dispatch_requests.txt").read_text(encoding="utf-8").splitlines()
                          if l.strip() and not l.startswith("#")]
@@ -205,11 +210,15 @@ class Handler(SimpleHTTPRequestHandler):
         url = urlparse(self.path)
         try:
             body = self._body()
+            if not isinstance(body, dict):
+                raise ValueError("body must be a JSON object")
         except (ValueError, json.JSONDecodeError):
             return self._error("body must be JSON")
         try:
             if url.path == "/api/handle":
                 return self._handle(body)
+            if url.path == "/api/chat":
+                return self._chat(body)
             if url.path == "/api/confirm":
                 return self._confirm(body)
             return self._error("unknown endpoint", HTTPStatus.NOT_FOUND)
@@ -231,25 +240,84 @@ class Handler(SimpleHTTPRequestHandler):
         except KeyError:
             return self._error(f"unknown objective {objective!r}")
 
-        use_llm = body.get("parser") == "llm"
-        note = None
-        if use_llm and not _llm_available():
-            use_llm, note = False, "Claude is not configured on this server, so the regex parser was used."
-        elif use_llm and not _llm_budget_ok():
-            use_llm, note = False, "Hourly Claude budget for this demo is used up, so the regex parser was used."
-        dec = handle_line(line, parse_llm if use_llm else parse_baseline, objective=obj)
-        if note:
-            dec.request.warnings.insert(0, note)
-
-        did = uuid.uuid4().hex[:12]
+        parser = self._parser(body)
+        dec = handle_line(line, parser, objective=obj)
         with _lock:
-            _decisions[did] = dec
-            if len(_decisions) > 500:                       # keep memory bounded
-                for k in list(_decisions)[:100]:
-                    _decisions.pop(k, None)
-        if dec.behaviour.value != "allocate":               # nothing to confirm: log now
-            audit.record(dec)
+            did = self._save(dec)
         return self._send(_decision_payload(dec, did))
+
+    def _parser(self, body):
+        def read(line, *, resolve=True):
+            note = None
+            if body.get("parser") != "llm":
+                return parse_baseline(line, resolve=resolve)
+            if not _llm_available():
+                note = "Claude is not configured, so the regex parser was used."
+            elif not _llm_budget_ok():
+                note = "Hourly Claude budget is used up, so the regex parser was used."
+            if note:
+                req = parse_baseline(line, resolve=resolve)
+                req.warnings.insert(0, note)
+                return req
+            return parse_llm(line, resolve=resolve)
+        return read
+
+    def _save(self, dec):
+        if dec.behaviour != Behaviour.ALLOCATE:
+            audit.record(dec)
+        did = uuid.uuid4().hex[:12]
+        _decisions[did] = dec
+        if len(_decisions) > 500:
+            _decisions.pop(next(iter(_decisions)))
+        return did
+
+    def _chat(self, body):
+        text = body.get("line")
+        cid = body.get("conversation_id")
+        if not isinstance(text, str) or not text.strip() or len(text) > MAX_MESSAGE:
+            return self._error(f"Enter a message of 1 to {MAX_MESSAGE} characters.")
+        if cid is not None and (not isinstance(cid, str) or not re.fullmatch(r"[0-9a-f]{32}", cid)):
+            return self._error("Invalid conversation identifier.")
+        try:
+            obj = objective_for(body.get("level", 2))
+        except ValueError as error:
+            return self._error(str(error))
+        with _lock:
+            previous = _conversations.get(cid)
+            previous_decision = _decisions.get(previous.decision_id) if previous else None
+        if cid and previous is None:
+            return self._error("This conversation expired on the server. Start a new one to continue.",
+                               HTTPStatus.GONE)
+        if previous and (type(body.get("turn")) is not int or body["turn"] != previous.turn):
+            return self._error("This conversation changed. Reopen it or start a new one.", HTTPStatus.CONFLICT)
+        if previous_decision and previous_decision.confirmed_by:
+            return self._error("This allocation is confirmed. Start a new conversation for another request.",
+                               HTTPStatus.CONFLICT)
+
+        line = _normalise_line(text, str(body.get("sender", "")))
+        try:
+            draft = merge_turn(line, self._parser(body), previous)
+        except ValueError as error:
+            return self._error(str(error))
+        dec = handle(draft.request, obj, no_split=draft.no_split)
+        with _lock:
+            if previous and (_conversations.get(cid) is not previous or
+                             (previous_decision and previous_decision.confirmed_by)):
+                return self._error("This conversation changed. Reopen it or start a new one.", HTTPStatus.CONFLICT)
+            did = self._save(dec)
+            if previous:
+                _decisions.pop(previous.decision_id, None)
+            cid = cid or uuid.uuid4().hex
+            draft.decision_id = did
+            _conversations.pop(cid, None)
+            _conversations[cid] = draft
+            if len(_conversations) > 500:
+                _conversations.pop(next(iter(_conversations)))
+        payload = _decision_payload(dec, did)
+        payload["conversation_id"] = cid
+        payload["turn"] = draft.turn
+        payload["keep_together"] = draft.no_split
+        return self._send(payload)
 
     def _confirm(self, body):
         who = re.sub(r"[^\w .&'-]", "", str(body.get("confirmed_by", ""))).strip()[:40]
@@ -257,11 +325,13 @@ class Handler(SimpleHTTPRequestHandler):
             return self._error("Enter your name before confirming.")
         with _lock:
             dec = _decisions.get(str(body.get("id", "")))
-        if dec is None:
-            return self._error("That decision has expired. Read the request again.", HTTPStatus.NOT_FOUND)
-        if dec.confirmed_by:
-            return self._error(f"Already confirmed by {dec.confirmed_by}.", HTTPStatus.CONFLICT)
-        rec = audit.confirm(dec, who)
+            if dec is None:
+                return self._error("That decision has expired. Read the request again.", HTTPStatus.NOT_FOUND)
+            if dec.behaviour != Behaviour.ALLOCATE:
+                return self._error("Only an allocation can be confirmed.", HTTPStatus.CONFLICT)
+            if dec.confirmed_by:
+                return self._error(f"Already confirmed by {dec.confirmed_by}.", HTTPStatus.CONFLICT)
+            rec = audit.confirm(dec, who)
         return self._send({"ok": True, "confirmed_by": who, "created_at": rec["created_at"]})
 
 

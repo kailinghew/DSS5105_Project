@@ -13,11 +13,10 @@ from datetime import date
 from typing import Callable
 
 from desk.allocator import load_objective
-from desk.data import TODAY, workshops
+from desk.data import TODAY
 from desk.explain import fmt_date
 from desk.schemas import Behaviour, ConstraintKind, Decision, Objective, ParsedRequest
-from desk.tools import (allocate, earliest_possible, estimate_eta, get_order, overload_probe,
-                        split_options)
+from desk.tools import allocate, get_order, overload_probe, split_options
 
 from .parse import parse_baseline
 
@@ -27,7 +26,7 @@ def handle_line(line: str, parser: Callable[[str], ParsedRequest] = parse_baseli
     return handle(parser(line), objective)
 
 
-def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
+def handle(req: ParsedRequest, objective: Objective | None = None, *, no_split: bool = False) -> Decision:
     obj = objective or load_objective()
     dec = Decision(req.request_id, Behaviour.DECLINE, req, obj.name)
 
@@ -42,7 +41,7 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
     # 2. ambiguous or incomplete -> ask ---------------------------------------------------
     if req.missing or not req.order_id:
         dec.behaviour = Behaviour.CLARIFY
-        need = {"pieces": "the quantity", "due_date": "the confirmed due date",
+        need = {"pieces": "the quantity", "due_date": "the due date",
                 "order": "which order this is"}
         asks = [need[m] for m in req.missing if not (m == "order" and req.candidate_orders)]
         parts = []
@@ -70,6 +69,7 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
                                                "queue_days": c.queue_days, "slack": c.slack_days}
                                for c in cands if c.eligible}
     best = next((c for c in cands if c.workshop_id == chosen), None)
+    excluded_ids = frozenset(c.workshop_id for c in cands if c.excluded_by)
 
     # 3. suggested workshop that can't take it -> refuse ----------------------------------
     if req.suggested_workshop:
@@ -86,7 +86,7 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
                                    f" (on time for {fmt_date(due)}), ${best.cost:,.0f}.")
             else:
                 # the alternative is late too: say so, with the same options as an impossible date
-                early = _late_options(dec, cat, pieces, due)
+                early = _late_options(dec, cat, pieces, due, excluded=excluded_ids, no_split=no_split)
                 dec.alternative = early.workshop_id
                 dec.explanation = (why + f" No other workshop can make {fmt_date(due)} either:"
                                    f" the earliest single workshop is {early.name}, about {fmt_date(early.eta_date)}."
@@ -102,13 +102,13 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
         return dec
 
     # 4. nobody can make the date -> impossible, with numbers and options ------------------
-    split = split_options(cat, pieces, TODAY, due) if not best.meets_due or any(
-        k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints) else None
+    split_ok = not no_split and any(k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints)
+    split = (split_options(cat, pieces, TODAY, due, excluded=excluded_ids)
+             if not no_split and (not best.meets_due or split_ok) else None)
     # a split only rescues the date if the sender allowed one; otherwise a late single
     # shop must not be allocated silently (found while fixing F8: "Apr 8th" -> late by 1 day)
-    split_ok = any(k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints)
     if not best.meets_due and not (split and split["meets_due"] and split_ok):
-        early = _late_options(dec, cat, pieces, due, split)
+        early = _late_options(dec, cat, pieces, due, split, excluded=excluded_ids, no_split=no_split)
         dec.behaviour = Behaviour.IMPOSSIBLE
         dec.alternative = early.workshop_id
         overdue = " It is already overdue." if due < TODAY else ""
@@ -120,8 +120,7 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
     # 5. allocate ------------------------------------------------------------------------
     dec.behaviour = Behaviour.ALLOCATE
     dec.chosen = chosen
-    if split and split["meets_due"] and split["eta_days"] < best.eta_days and any(
-            k.kind == ConstraintKind.SPLIT_ALLOWED for k in req.constraints):
+    if split_ok and split and split["meets_due"] and split["eta_days"] < best.eta_days:
         dec.split = split["parts"]
         dec.facts["split"] = split
     probe = overload_probe(chosen, pieces)
@@ -149,13 +148,15 @@ def handle(req: ParsedRequest, objective: Objective | None = None) -> Decision:
     return dec
 
 
-def _late_options(dec: Decision, cat: str, pieces: int, due: date, split: dict | None = None):
+def _late_options(dec: Decision, cat: str, pieces: int, due: date, split: dict | None = None,
+                  *, excluded: frozenset[str] = frozenset(), no_split: bool = False):
     """When no single workshop can make the date: record the earliest achievable date and
     the three options (accept lateness, split, escalate) in dec.facts / dec.options.
     Returns the earliest candidate."""
-    early = earliest_possible(cat, pieces, TODAY, due)
-    if split is None:
-        split = split_options(cat, pieces, TODAY, due)
+    early = min((c for c in dec.candidates if c.eligible and not c.excluded_by),
+                key=lambda c: (c.eta_days, c.workshop_id))
+    if split is None and not no_split:
+        split = split_options(cat, pieces, TODAY, due, excluded=excluded)
     dec.facts["earliest"] = {"workshop": early.workshop_id, "eta": early.eta_date,
                              "days_late": -early.slack_days}
     dec.facts["split"] = split

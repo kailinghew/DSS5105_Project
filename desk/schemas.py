@@ -61,6 +61,8 @@ class ParsedRequest:
     candidate_orders: list[str] = field(default_factory=list)  # filled when ambiguous
     parser: str = "baseline"         # which parser produced this ("baseline" | "llm:<model>")
     warnings: list[str] = field(default_factory=list)  # e.g. LLM value dropped by validation
+    customer: Optional[str] = None
+    product: Optional[str] = None
 
 
 @dataclass
@@ -94,6 +96,7 @@ class Objective:
     w_share: float = 0.0
     w_cost: float = 0.0
     stall_watch: bool = False
+    on_time_first: bool = False
 
 
 @dataclass
@@ -114,7 +117,11 @@ class Decision:
     created_at: str = field(default_factory=lambda: datetime.now().isoformat(timespec="seconds"))
 
     def to_dict(self) -> dict:
-        return _jsonable(asdict(self))
+        value = _jsonable(asdict(self))
+        # Customer and product support context merging, while legacy API payloads stay stable.
+        value["request"].pop("customer")
+        value["request"].pop("product")
+        return value
 
 
 def _jsonable(x):

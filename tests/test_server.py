@@ -4,7 +4,9 @@ import threading
 import urllib.request
 from http.server import ThreadingHTTPServer
 
+import ui.server as server
 from ui.server import Handler
+from desk import audit
 
 
 def _server():
@@ -28,7 +30,6 @@ def _post(url, body):
 
 
 def test_endpoints(tmp_path, monkeypatch):
-    from desk import audit
     monkeypatch.setattr(audit, "LOG", tmp_path / "decisions.jsonl")
     httpd, base = _server()
     try:
@@ -58,3 +59,29 @@ def test_endpoints(tmp_path, monkeypatch):
         assert _post(base + "/api/handle", {"line": "ORD-063", "objective": "nope"})[0] == 400
     finally:
         httpd.shutdown()
+
+
+def test_chat_api_rejects_stale_confirmation_and_preserves_legacy_log(tmp_path, monkeypatch):
+    monkeypatch.setattr(audit, "LOG", tmp_path / "decisions.jsonl")
+    monkeypatch.setattr(server, "_conversations", {})
+    monkeypatch.setattr(server, "_decisions", {})
+    httpd, base = _server()
+    try:
+        chat = base + "/api/chat"
+        confirm = base + "/api/confirm"
+        code, first = _post(chat, {"line": "ORD-066. The deadline is still to be confirmed.", "level": 2})
+        assert code == 200 and first["behaviour"] == "clarify" and first["turn"] == 1
+        assert _post(confirm, {"id": first["id"], "confirmed_by": "QA"})[0] == 409
+        update = {"conversation_id": first["conversation_id"], "turn": 1, "line": "Apr 18", "level": 0}
+        code, second = _post(chat, update)
+        assert code == 200 and second["turn"] == 2 and second["behaviour"] == "allocate"
+        assert second["request"]["order_id"] == "ORD-066"
+        assert _post(chat, update)[0] == 409
+        assert _post(confirm, {"id": second["id"], "confirmed_by": "QA"})[0] == 200
+        assert _post(chat, {**update, "turn": 2})[0] == 409
+        assert json.loads(_get(base + "/api/log")[1])[0]["confirmed_by"] == "QA"
+        assert _post(chat, {**update, "conversation_id": "0" * 32})[0] == 410
+        assert _post(chat, {"line": "ORD-066", "level": True})[0] == 400
+    finally:
+        httpd.shutdown()
+        httpd.server_close()

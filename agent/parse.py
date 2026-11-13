@@ -125,7 +125,7 @@ def _num_in_text(n: int, text: str) -> bool:
     return str(n) in re.sub(r"(?<=\d),(?=\d{3})", "", text)
 
 
-def parse_llm(line: str, fallback: bool = True) -> ParsedRequest:
+def parse_llm(line: str, fallback: bool = True, *, resolve: bool = True) -> ParsedRequest:
     """LLM extraction (Claude Haiku 5.5), then deterministic validation and order
     resolution. Any value the model reports that the message does not contain is dropped
     with a warning — the model never supplies a number. If the LLM is unavailable and
@@ -138,7 +138,7 @@ def parse_llm(line: str, fallback: bool = True) -> ParsedRequest:
     except LLMError as e:
         if not fallback:
             raise
-        req = parse_baseline(line)
+        req = parse_baseline(line, resolve=resolve)
         req.parser = "baseline(fallback)"
         req.warnings.append(f"LLM unavailable, used regex baseline: {e}")
         return req
@@ -197,7 +197,8 @@ def parse_llm(line: str, fallback: bool = True) -> ParsedRequest:
 
     customer = _match_known(out.get("customer"), {o["customer"] for o in orders().values()})
     product = _match_known(out.get("product"), {o["product"] for o in orders().values()})
-    return resolve_order(req, customer, product)
+    req.customer, req.product = customer, product
+    return resolve_order(req, customer, product) if resolve else req
 
 
 def _match_known(value: str | None, known: set[str]) -> str | None:
@@ -225,7 +226,7 @@ def _singular(w: str) -> str:
     return w
 
 
-def parse_baseline(line: str) -> ParsedRequest:
+def parse_baseline(line: str, *, resolve: bool = True) -> ParsedRequest:
     rid, time, sender, text = split_line(line)
     low = text.lower()
     req = ParsedRequest(request_id=rid, sender=sender.strip(), time=time, raw_text=line.strip())
@@ -292,7 +293,8 @@ def parse_baseline(line: str) -> ParsedRequest:
         words = {_singular(w) for w in re.findall(r"[a-z]+", low)}
         product = next((pr for pr in sorted({o["product"] for o in orders().values()})
                         if pr.lower().split()[0] in words), None)
-    return resolve_order(req, customer, product)
+    req.customer, req.product = customer, product
+    return resolve_order(req, customer, product) if resolve else req
 
 
 def _says_new_order(req: ParsedRequest) -> bool:
@@ -301,7 +303,7 @@ def _says_new_order(req: ParsedRequest) -> bool:
 
 
 def resolve_order(req: ParsedRequest, customer: str | None = None,
-                  product: str | None = None) -> ParsedRequest:
+                  product: str | None = None, *, preserve_candidates: bool = False) -> ParsedRequest:
     """Shared by both parsers: turn what was extracted into a known order (or a list of
     candidates to ask about), and fill from orders.csv what the message did not state."""
     if req.order_id:
@@ -314,6 +316,8 @@ def resolve_order(req: ParsedRequest, customer: str | None = None,
         # the order is NEW ("new rush ... details to follow") has nothing to match.
         if (customer or product) and not _says_new_order(req):
             matches = find_orders(customer=customer, product=product)
+            if preserve_candidates and req.candidate_orders:
+                matches = [o for o in matches if o["order_id"] in req.candidate_orders]
             if len(matches) == 1 and not req.missing:
                 req.order_id = matches[0]["order_id"]
             else:
