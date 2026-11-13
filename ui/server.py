@@ -147,6 +147,8 @@ class Handler(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         self.send_header("X-Content-Type-Options", "nosniff")
+        if not self.path.startswith("/api/"):     # page files: always recheck, so a redeploy
+            self.send_header("Cache-Control", "no-cache")   # is never hidden by an old app.js
         super().end_headers()
 
     # ------------------------------------------------------------------ GET
