@@ -59,6 +59,8 @@ class ParsedRequest:
     question_type: Optional[str] = None  # set when the message asks something the data
                                          # can't answer: "history", "price", "unknown_order"
     candidate_orders: list[str] = field(default_factory=list)  # filled when ambiguous
+    customer: Optional[str] = None   # as named in the message (kept so an answer to the
+    product: Optional[str] = None    # desk's question can narrow the same lookup)
     parser: str = "baseline"         # which parser produced this ("baseline" | "llm:<model>")
     warnings: list[str] = field(default_factory=list)  # e.g. LLM value dropped by validation
 

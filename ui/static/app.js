@@ -242,7 +242,13 @@ function renderDecision(d) {
   } else if (b === "clarify") {
     status = "Ask first";
     title = "Ask before allocating";
-    body = `<p class="ask-box">${esc(d.question)}</p>`;
+    body = `<p class="ask-box">${esc(d.question)}</p>
+      <form class="answer-row" id="answer-form">
+        <label for="answer-text">Answer for ${esc(r.sender)}</label>
+        <input id="answer-text" type="text" maxlength="500" autocomplete="off"
+               placeholder="e.g. ORD-017 · the cardigans one · the second one · Apr 20">
+        <button class="primary" type="submit" id="answer-btn">Send answer</button>
+      </form>`;
   } else if (b === "refuse") {
     status = "Refuse";
     title = `${esc(nameOf(d, f.refused.workshop))} can't take this`;
@@ -294,6 +300,9 @@ function renderDecision(d) {
     </article>`;
 
   $("#copy-btn").addEventListener("click", () => copy(d.reply));
+  if (b === "clarify") {
+    $("#answer-form").addEventListener("submit", (e) => { e.preventDefault(); answerQuestion(d); });
+  }
   if (b === "allocate") {
     $("#confirm-btn").addEventListener("click", () => confirm(d));
     $("#confirm-name").addEventListener("keydown", (e) => { if (e.key === "Enter") confirm(d); });
@@ -317,6 +326,24 @@ const plainReason = (r) => r
   .replace(/\b(TOPS|ACCESSORIES)\b/g, (m) => m.toLowerCase());
 const capital = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 function dateLabel(iso) { const [y, m, dd] = iso.split("-").map(Number); return `${MONTHS[m - 1]} ${dd}`; }
+
+async function answerQuestion(q) {
+  const text = $("#answer-text").value.trim();
+  if (!text) { $("#answer-text").focus(); return; }
+  const btn = $("#answer-btn");
+  btn.disabled = true;
+  btn.textContent = state.parser === "llm" ? "Reading with Claude…" : "Reading…";
+  try {
+    const d = await api("/api/handle", { line: text, sender: q.request.sender, answers: q.id,
+                                         parser: state.parser, objective: $("#objective").value });
+    if (state.current) { state.outcome[state.current.id] = d.behaviour; renderInbox(); }
+    renderDecision(d);
+  } catch (e) {
+    toast(e.message);
+    btn.disabled = false;
+    btn.textContent = "Send answer";
+  }
+}
 
 async function confirm(d) {
   const who = $("#confirm-name").value.trim();

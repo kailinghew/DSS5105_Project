@@ -89,6 +89,22 @@ Cost of the run: 67,089 input + 2,775 output tokens.
   fail, so the post-fix held-out score is not an unseen test and is reported only as a
   check that the fix works.
 
+## C4. Answers to the desk's own questions (13 Nov)
+
+Every message used to be read on its own, so a short answer to a question ("the
+cardigans one" after "6 TrendCart orders match") lost the first message and the desk
+asked again. `agent/followup.py` now reads an answer against the question it answers:
+an order id, an ordinal ("the second one") or a product/customer that narrows the list
+picks the order; a stated date or quantity fills the gap; anything not stated is kept
+from the question, and anything still unknown is asked again. The parser (Claude or
+regex) only reads the answer line; merging and lookup are plain code. The web app shows
+an answer box under every question; the API takes `answers: <question id>`.
+
+- 9 tests in `tests/test_followup.py` + a server round trip; 47 tests in all.
+- No prompt or schema change: the inbox scores are unchanged (dev and held-out,
+  Claude and regex, 30/30/30). Two-message exchanges are not in either evaluation set;
+  scoring them is listed as further work.
+
 ## Next
 
 - Score Claude on the failure-log probes R91-R99 (new wording, never used for tuning).

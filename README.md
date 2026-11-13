@@ -23,7 +23,7 @@ python -m eval.run_inbox --parser llm --show   # Claude Haiku 5.5 parser on the 
 python -m eval.run_inbox --show     # all 30 chat requests, scored against eval/gold_labels.json
 python -m eval.run_sim              # every objective vs the 3 baselines + the earliest-finish rule,
                                     # normal and --shock, 10 seeds -> eval/results_sim.csv
-python -m pytest -q                 # 38 tests, no API key needed (also run on every push)
+python -m pytest -q                 # 47 tests, no API key needed (also run on every push)
 ```
 
 ## The dispatcher desk (UI)
@@ -38,6 +38,11 @@ page, one stylesheet, one script, no build step).
   - whose instructions it followed;
   - a strip per workshop showing queue wait, making time, expected rework and
     transport against the due date, so you can see why the winner won.
+- **Answer a question:** when the desk asks ("6 orders match: which one?", "please
+  confirm the date"), type the answer in the box under the question: "ORD-017", "the
+  cardigans one", "the second one", "Apr 20". It is read together with the original
+  message (`agent/followup.py`), so it need not repeat the order. What the answer states
+  wins; anything still unknown is asked again.
 - **Confirm and log:** writes the allocation, with the confirmer's name, to the audit
   log. "Copy reply" gives the text to paste back into the chat. "Read all" triages the
   whole inbox at once.

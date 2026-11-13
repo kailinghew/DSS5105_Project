@@ -193,6 +193,12 @@ button.small { padding: 4px 10px; font-size: 13px; }
   background: var(--tone-bg); border-radius: var(--r-sm); padding: 12px 14px; max-width: 75ch;
   font-size: 16px;
 }
+.answer-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; max-width: 75ch; }
+.answer-row label { width: 100%; font-size: 13px; font-weight: 600; color: var(--ink-2); }
+.answer-row input {
+  flex: 1 1 260px; min-width: 0; border: 1px solid var(--rule); border-radius: var(--r-sm);
+  padding: 8px 10px; background: var(--paper); font: inherit; font-size: 14px;
+}
 .options { margin: 10px 0 0; padding-left: 20px; max-width: 75ch; }
 .options li { margin: 4px 0; }
 .notes { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }

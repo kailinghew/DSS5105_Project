@@ -304,6 +304,7 @@ def resolve_order(req: ParsedRequest, customer: str | None = None,
                   product: str | None = None) -> ParsedRequest:
     """Shared by both parsers: turn what was extracted into a known order (or a list of
     candidates to ask about), and fill from orders.csv what the message did not state."""
+    req.customer, req.product = customer or req.customer, product or req.product
     if req.order_id:
         if get_order(req.order_id) is None:
             req.question_type = req.question_type or "unknown_order"

@@ -36,6 +36,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path[:0] = [str(ROOT), str(ROOT / "harness")]
 
 from agent.desk_agent import handle_line  # noqa: E402
+from agent.followup import answer  # noqa: E402
 from agent.parse import parse_baseline, parse_llm, split_line  # noqa: E402
 from desk import audit  # noqa: E402
 from desk.allocator import CONFIG as OBJECTIVES, load_objective  # noqa: E402
@@ -98,6 +99,7 @@ def _decision_payload(dec, did: str) -> dict:
     d = dec.to_dict()
     due = dec.request.due_date
     d["id"] = did
+    d["answers"] = getattr(dec, "answers", None)
     d["reply"] = _reply_text(dec)
     d["due_in_days"] = (due - TODAY).days if due else None
     d["due_label"] = fmt_date(due) if due else None
@@ -237,11 +239,24 @@ class Handler(SimpleHTTPRequestHandler):
             use_llm, note = False, "Claude is not configured on this server, so the regex parser was used."
         elif use_llm and not _llm_budget_ok():
             use_llm, note = False, "Hourly Claude budget for this demo is used up, so the regex parser was used."
-        dec = handle_line(line, parse_llm if use_llm else parse_baseline, objective=obj)
+        parser = parse_llm if use_llm else parse_baseline
+        answers = str(body.get("answers") or "")
+        if answers:                       # an answer to one of the desk's own questions
+            with _lock:
+                question = _decisions.get(answers)
+            if question is None:
+                return self._error("That question has expired. Read the original request again.",
+                                   HTTPStatus.NOT_FOUND)
+            if question.behaviour.value != "clarify":
+                return self._error("Only a question from the desk can be answered.")
+            dec = answer(question.request, line, parser, objective=obj)
+        else:
+            dec = handle_line(line, parser, objective=obj)
         if note:
             dec.request.warnings.insert(0, note)
 
         did = uuid.uuid4().hex[:12]
+        dec.answers = answers or None
         with _lock:
             _decisions[did] = dec
             if len(_decisions) > 500:                       # keep memory bounded

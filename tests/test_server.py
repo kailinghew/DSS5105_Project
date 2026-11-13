@@ -53,6 +53,15 @@ def test_endpoints(tmp_path, monkeypatch):
         code, d = _post(base + "/api/handle", {"line": "ORD-063, 100 cardigans, back by Apr 29", "sender": "Mei"})
         assert code == 200 and d["behaviour"] == "allocate" and d["request"]["sender"] == "Mei"
 
+        # an answer to the desk's question is read against that question
+        code, q = _post(base + "/api/handle", {"line": "R03 [08:12] Chen: Can we get the TrendCart order moving?"})
+        assert code == 200 and q["behaviour"] == "clarify"
+        code, a = _post(base + "/api/handle", {"line": "the cardigans one", "sender": "Chen", "answers": q["id"]})
+        assert code == 200 and a["behaviour"] == "allocate" and a["request"]["order_id"] == "ORD-017"
+        assert a["answers"] == q["id"]
+        assert _post(base + "/api/handle", {"line": "ORD-017", "answers": "expired-id"})[0] == 404
+        assert _post(base + "/api/handle", {"line": "ORD-017", "answers": d["id"]})[0] == 400  # not a question
+
         assert _post(base + "/api/handle", {"line": ""})[0] == 400
         assert _post(base + "/api/handle", {"line": "x" * 600})[0] == 400
         assert _post(base + "/api/handle", {"line": "ORD-063", "objective": "nope"})[0] == 400
