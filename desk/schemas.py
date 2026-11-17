@@ -96,6 +96,7 @@ class Objective:
     w_share: float = 0.0
     w_cost: float = 0.0
     stall_watch: bool = False
+    on_time_first: bool = False
 
 
 @dataclass
