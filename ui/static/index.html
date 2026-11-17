@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="chat.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%231C2541'/%3E%3Cpath d='M3 5h10M3 8h7M3 11h4' stroke='%23fff' stroke-width='1.6'/%3E%3C/svg%3E">
 </head>
 <body>
@@ -16,7 +17,7 @@
     <span class="brand-mark" aria-hidden="true"></span>
     <div>
       <h1>Subcontracting desk</h1>
-      <p class="brand-sub">SweaterCo · morning of <span id="today">1 Apr 2026</span></p>
+      <p class="brand-sub">SweaterCo</p>
     </div>
   </div>
   <nav class="tabs" role="tablist" aria-label="Views">
@@ -25,9 +26,6 @@
     <button role="tab" id="tab-log" aria-selected="false" aria-controls="view-log" tabindex="-1">Decision log</button>
   </nav>
   <div class="settings">
-    <label class="field-inline">Optimise for
-      <select id="objective"></select>
-    </label>
     <div class="seg" role="radiogroup" aria-label="Who reads the message">
       <button role="radio" aria-checked="true" data-parser="llm" id="p-llm">Claude Haiku</button>
       <button role="radio" aria-checked="false" data-parser="baseline" id="p-regex">Regex</button>
@@ -36,35 +34,49 @@
 </header>
 
 <!-- ============================ REQUESTS ============================ -->
-<main id="view-desk" role="tabpanel" aria-labelledby="tab-desk" class="desk">
-  <aside class="inbox" aria-label="Group chat inbox">
-    <div class="inbox-head">
-      <h2>Group chat</h2>
-      <button class="ghost small" id="read-all">Read all</button>
+<main id="view-desk" role="tabpanel" aria-labelledby="tab-desk" class="chat">
+  <aside id="conversations" class="conversation-rail" aria-label="Conversations">
+    <div class="rail-head">
+      <h2>Conversations</h2>
+      <button type="button" class="primary new-chat" id="new-chat"><span aria-hidden="true">+</span> New chat</button>
     </div>
-    <p class="inbox-summary" id="inbox-summary">30 requests waiting.</p>
-    <ol class="inbox-list" id="inbox"></ol>
+    <ul id="chat-list" class="chat-list"></ul>
+    <details class="samples">
+      <summary>Course inbox <span id="sample-count"></span></summary>
+      <ul id="sample-list" class="chat-list"></ul>
+    </details>
   </aside>
 
-  <section class="work" aria-label="Current request">
-    <form class="compose" id="compose">
-      <label for="message" class="compose-label">Request</label>
-      <textarea id="message" rows="2" maxlength="500"
-        placeholder="Pick a message on the left, or type one: “ORD-063, 100 cardigans, back by Apr 29”"></textarea>
-      <div class="compose-row">
-        <label class="field-inline">From <input id="sender" type="text" value="Dispatcher" maxlength="30" autocomplete="off"></label>
-        <button type="submit" class="primary" id="read-btn">Read request</button>
-      </div>
-    </form>
-
-    <div id="result" aria-live="polite">
-      <div class="empty">
-        <p class="empty-title">Nothing open yet</p>
-        <p>Pick a message from the group chat. The desk checks every workshop — can they make it, can they take it now, are they allowed to — and shows when each could deliver.</p>
-      </div>
+  <section class="chat-work" aria-label="Dispatch conversation">
+    <div class="chat-head">
+      <button class="ghost small rail-toggle" type="button" id="rail-toggle" aria-expanded="false" aria-controls="conversations">Chats</button>
+      <h2 id="chat-title">New conversation</h2>
+      <span class="snapshot">Queue snapshot · <span id="today">1 Apr 2026</span></span>
+    </div>
+    <div class="chat-scroll" id="chat-scroll">
+      <div class="chat-stream" id="chat-stream" aria-live="polite" aria-relevant="additions text"></div>
+    </div>
+    <div class="composer-area">
+      <form class="chat-compose" id="compose">
+        <label class="sr-only" for="message">Message</label>
+        <textarea id="message" rows="2" maxlength="500" placeholder="Message the desk…"></textarea>
+        <div class="composer-controls">
+          <div class="tradeoff">
+            <div class="tradeoff-head">
+              <label for="tradeoff">On-time preference</label>
+              <output id="tradeoff-value" for="tradeoff">50% cost · 50% defects</output>
+            </div>
+            <input id="tradeoff" type="range" min="0" max="4" step="1" value="2" aria-describedby="tradeoff-ends">
+            <div class="tradeoff-ends" id="tradeoff-ends"><span>Lowest cost</span><span>Fewest defects</span></div>
+          </div>
+          <button type="submit" class="primary send" id="read-btn">Send <span aria-hidden="true">↑</span></button>
+        </div>
+      </form>
+      <p class="compose-status" id="compose-status" role="status"></p>
     </div>
   </section>
 </main>
+
 
 <!-- ============================ WORKSHOPS ============================ -->
 <main id="view-register" role="tabpanel" aria-labelledby="tab-register" class="page" hidden>
@@ -94,5 +106,6 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script src="app.js"></script>
+<script src="chat.js"></script>
 </body>
 </html>

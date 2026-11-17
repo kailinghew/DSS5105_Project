@@ -171,7 +171,9 @@ def allocate(category: str, pieces: int, sent: date, due: date, queues: dict | N
             for c in cands:
                 if c.workshop_id == k.value:
                     c.excluded_by = k.imposed_by or "unknown"
-    ranked = rank_candidates(cands, objective, loaded, total, pieces)
+    on_time_pool = [c for c in cands if c.eligible and c.excluded_by is None and c.meets_due]
+    pool = on_time_pool if objective.on_time_first and on_time_pool else cands
+    ranked = rank_candidates(pool, objective, loaded, total, pieces)
     if not ranked:
         return None, cands
     on_time = [c for c in ranked if c.meets_due]
@@ -183,6 +185,8 @@ def allocate(category: str, pieces: int, sent: date, due: date, queues: dict | N
         pick = min(on_time, key=lambda c: (c.defect_rate, c.eta_days))
     elif kinds.keys() & {ConstraintKind.CHEAPEST_ON_TIME, ConstraintKind.LOWEST_DEFECT_ON_TIME}:
         pick = min(ranked, key=lambda c: (c.eta_days, c.workshop_id))   # nobody on time
+    elif objective.on_time_first:
+        pick = on_time[0] if on_time else min(ranked, key=lambda c: (c.eta_days, c.workshop_id))
     else:
         pick = ranked[0]
     return pick.workshop_id, cands
@@ -195,13 +199,13 @@ def earliest_possible(category: str, pieces: int, sent: date = TODAY, due: date 
 
 
 def split_options(category: str, pieces: int, sent: date = TODAY, due: date | None = None,
-                  queues: dict | None = None) -> Optional[dict]:
+                  queues: dict | None = None, *, excluded: frozenset[str] = frozenset()) -> Optional[dict]:
     """Best two-shop split: pieces divided in proportion to capacity, finish = the later
     of the two. Returns None if fewer than two shops are eligible."""
     q = queues or today_queues()
     ws = workshops()
     best = None
-    for a, b in combinations(ws.values(), 2):
+    for a, b in combinations((w for w in ws.values() if w.workshop_id not in excluded), 2):
         cap = a.capacity + b.capacity
         pa = round(pieces * a.capacity / cap)
         parts = [(a, pa), (b, pieces - pa)]

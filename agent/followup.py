@@ -48,6 +48,18 @@ def _pick_ordinal(text: str, candidates: list[str]) -> str | None:
     return None
 
 
+def matching_orders(text: str, candidates: list[str], *, customer: str | None,
+                    product: str | None) -> list[str] | None:
+    """Select a position or narrow the list shown. None means no selection was attempted."""
+    order = _pick_ordinal(text, candidates)
+    if order:
+        return [order]
+    if customer or product:
+        ids = {o["order_id"] for o in find_orders(customer=customer, product=product)}
+        return [order for order in candidates if order in ids]
+    return None
+
+
 def merge(question: ParsedRequest, ans: ParsedRequest) -> ParsedRequest:
     """The request the two messages make together, before order resolution."""
     _, _, _, text = split_line(ans.raw_text)
@@ -70,18 +82,18 @@ def merge(question: ParsedRequest, ans: ParsedRequest) -> ParsedRequest:
     # list narrowed by the customer/product the two messages name together
     order = ans.order_id if ans.order_id and not ans.question_type else None
     if not order and q.candidate_orders:
-        order = _pick_ordinal(text, q.candidate_orders)
-        if not order and (ans.customer or ans.product):
-            ids = {o["order_id"] for o in find_orders(customer=req.customer, product=req.product)}
-            narrowed = [o for o in q.candidate_orders if o in ids]
-            if len(narrowed) == 1:
-                order = narrowed[0]
-            elif narrowed:
-                req.candidate_orders = narrowed
-            else:
-                named = " ".join(x for x in (req.customer, req.product) if x)
-                req.warnings.append(f"None of the {len(q.candidate_orders)} orders listed matches "
-                                    f"“{named}”; still asking which one.")
+        has_filter = ans.customer or ans.product
+        narrowed = matching_orders(text, q.candidate_orders,
+                                   customer=req.customer if has_filter else None,
+                                   product=req.product if has_filter else None)
+        if narrowed and len(narrowed) == 1:
+            order = narrowed[0]
+        elif narrowed:
+            req.candidate_orders = narrowed
+        elif narrowed == []:
+            named = " ".join(x for x in (req.customer, req.product) if x)
+            req.warnings.append(f"None of the {len(q.candidate_orders)} orders listed matches "
+                                f"“{named}”; still asking which one.")
     if order:
         req.order_id = order
         o = get_order(order)
